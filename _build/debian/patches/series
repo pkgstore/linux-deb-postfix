@@ -8,7 +8,6 @@
 10_openssl_version_check.diff
 12_add_bind_now_and_relro_to_pie.diff
 30_shared_libs.diff
-40_chroot_by_default.diff
 41_rmail.diff
 50_LANG.diff
 70_postfix-check.diff
