@@ -1,6 +1,5 @@
-diff -ruN postfix.orig/conf/main.cf postfix/conf/main.cf
---- postfix.orig/conf/main.cf	2021-03-22 14:58:15.000000000 +0300
-+++ postfix/conf/main.cf	2021-09-16 23:09:29.095126676 +0300
+--- a/conf/main.cf
++++ b/conf/main.cf
 @@ -75,7 +75,7 @@
  # particular, don't specify nobody or daemon. PLEASE USE A DEDICATED
  # USER.
@@ -47,9 +46,8 @@ diff -ruN postfix.orig/conf/main.cf postfix/conf/main.cf
  
  # The debug_peer_list parameter specifies an optional list of domain
  # or network patterns, /file/name patterns or type:name tables. When
-diff -ruN postfix.orig/conf/main.cf.tls postfix/conf/main.cf.tls
---- postfix.orig/conf/main.cf.tls	1970-01-01 03:00:00.000000000 +0300
-+++ postfix/conf/main.cf.tls	2021-09-16 23:09:55.678466456 +0300
+--- /dev/null
++++ b/conf/main.cf.tls
 @@ -0,0 +1,8 @@
 +# TLS parameters
 +smtpd_tls_cert_file=/etc/ssl/certs/ssl-cert-snakeoil.pem
@@ -59,9 +57,8 @@ diff -ruN postfix.orig/conf/main.cf.tls postfix/conf/main.cf.tls
 +smtp_tls_CApath=/etc/ssl/certs
 +smtp_tls_security_level=may
 +smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
-diff -ruN postfix.orig/conf/postfix-files postfix/conf/postfix-files
---- postfix.orig/conf/postfix-files	2019-01-30 01:24:42.000000000 +0300
-+++ postfix/conf/postfix-files	2021-09-16 23:12:18.426922205 +0300
+--- a/conf/postfix-files
++++ b/conf/postfix-files
 @@ -143,27 +143,28 @@
  $mailq_path:l:$sendmail_path
  $config_directory/LICENSE:f:root:-:644:1
