@@ -51,7 +51,7 @@ myfqdn() {
         if [ $myhostname = ${myhostname%.*} ]; then
             if [ -f /etc/resolv.conf ]; then
                 # The resolver uses the last one found, and ignores the rest
-                mydom=$(sed -n 's/^search[[:space:]]*\([^[:space:]]*\).*/\1/p;s/^domain[[:space:]]*\([^[:space:]]*\).*/\1/p' /etc/resolv.conf | tail -1)
+                mydom=$(sed -n 's/^search[[:space:]]*\.*\([^[:space:]]*\).*/\1/p;s/^domain[[:space:]]*\.*\([^[:space:]]*\).*/\1/p' /etc/resolv.conf | tail -1)
                 myhostname="$myhostname${mydom:+.$mydom}"
             else
                 myhostname="$myhostname.UNKNOWN"
