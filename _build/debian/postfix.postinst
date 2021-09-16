@@ -43,22 +43,23 @@ myfqdn() {
     myhostname=$(hostname --fqdn 2>/dev/null || echo "")
     # If we don't have a name with a dot (which includes ""), then we have work.
     if [ $myhostname = ${myhostname%.*} ]; then
-	# If it's empty, and we have /etc/hostname, try that.
-	if [ -z $myhostname ] && [ -r /etc/hostname ]; then
-	    myhostname=$(cat /etc/hostname)
-	fi
-	# If we are still lacking a domain component, then try resolv.conf.
-	if [ $myhostname = ${myhostname%.*} ]; then
-	    if [ -f /etc/resolv.conf ]; then
-		# The resolver uses the last one found, and ignores the rest
-		mydom=$(sed -n 's/^search[[:space:]]*\([^[:space:]]*\).*/\1/p;s/^domain[[:space:]]*\([^[:space:]]*\).*/\1/p' /etc/resolv.conf | tail -1)
-		myhostname="$myhostname${mydom:+.$mydom}"
-	    else
-		myhostname="$myhostname.UNKNOWN"
-	    fi
-	fi
+        # If it's empty, and we have /etc/hostname, try that.
+        if [ -z $myhostname ] && [ -r /etc/hostname ]; then
+            myhostname=$(cat /etc/hostname)
+        fi
+        # If we are still lacking a domain component, then try resolv.conf.
+        if [ $myhostname = ${myhostname%.*} ]; then
+            if [ -f /etc/resolv.conf ]; then
+                # The resolver uses the last one found, and ignores the rest
+                mydom=$(sed -n 's/^search[[:space:]]*\([^[:space:]]*\).*/\1/p;s/^domain[[:space:]]*\([^[:space:]]*\).*/\1/p' /etc/resolv.conf | tail -1)
+                myhostname="$myhostname${mydom:+.$mydom}"
+            else
+                myhostname="$myhostname.UNKNOWN"
+            fi
+        fi
     fi
-    echo $myhostname
+    # Remove all trailing dot's.
+    echo "${myhostname%"${myhostname##*[!.]}"}"
 }
 
 fset_all_changed() {
