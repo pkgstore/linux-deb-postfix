@@ -1,8 +1,7 @@
-Index: postfix/conf/master.cf
-===================================================================
---- postfix.orig/conf/master.cf
-+++ postfix/conf/master.cf
-@@ -9,12 +9,12 @@
+diff -ruN postfix.orig/conf/master.cf postfix/conf/master.cf
+--- postfix.orig/conf/master.cf	2021-04-20 21:48:49.000000000 +0300
++++ postfix/conf/master.cf	2021-09-16 23:39:47.763078636 +0300
+@@ -9,14 +9,14 @@
  # service type  private unpriv  chroot  wakeup  maxproc command + args
  #               (yes)   (yes)   (no)    (never) (100)
  # ==========================================================================
@@ -11,26 +10,28 @@ Index: postfix/conf/master.cf
 -#smtpd     pass  -       -       n       -       -       smtpd
 -#dnsblog   unix  -       -       n       -       0       dnsblog
 -#tlsproxy  unix  -       -       n       -       0       tlsproxy
--#submission inet n       -       n       -       -       smtpd
 +smtp      inet  n       -       y       -       -       smtpd
 +#smtp      inet  n       -       y       -       1       postscreen
 +#smtpd     pass  -       -       y       -       -       smtpd
 +#dnsblog   unix  -       -       y       -       0       dnsblog
 +#tlsproxy  unix  -       -       y       -       0       tlsproxy
+ # Choose one: enable submission for loopback clients only, or for any client.
+ #127.0.0.1:submission inet n -   n       -       -       smtpd
+-#submission inet n       -       n       -       -       smtpd
 +#submission inet n       -       y       -       -       smtpd
  #  -o syslog_name=postfix/submission
  #  -o smtpd_tls_security_level=encrypt
  #  -o smtpd_sasl_auth_enable=yes
-@@ -26,7 +26,7 @@ smtp      inet  n       -       n
- #  -o smtpd_recipient_restrictions=
- #  -o smtpd_relay_restrictions=permit_sasl_authenticated,reject
+@@ -30,7 +30,7 @@
  #  -o milter_macro_daemon_name=ORIGINATING
+ # Choose one: enable smtps for loopback clients only, or for any client.
+ #127.0.0.1:smtps inet n  -       n       -       -       smtpd
 -#smtps     inet  n       -       n       -       -       smtpd
 +#smtps     inet  n       -       y       -       -       smtpd
  #  -o syslog_name=postfix/smtps
  #  -o smtpd_tls_wrappermode=yes
  #  -o smtpd_sasl_auth_enable=yes
-@@ -37,33 +37,33 @@ smtp      inet  n       -       n
+@@ -41,33 +41,33 @@
  #  -o smtpd_recipient_restrictions=
  #  -o smtpd_relay_restrictions=permit_sasl_authenticated,reject
  #  -o milter_macro_daemon_name=ORIGINATING
@@ -83,7 +84,7 @@ Index: postfix/conf/master.cf
  postlog   unix-dgram n  -       n       -       1       postlogd
  #
  # ====================================================================
-@@ -78,8 +78,8 @@ postlog   unix-dgram n  -       n
+@@ -82,8 +82,8 @@
  # maildrop. See the Postfix MAILDROP_README file for details.
  # Also specify in main.cf: maildrop_destination_recipient_limit=1
  #
@@ -94,15 +95,7 @@ Index: postfix/conf/master.cf
  #
  # ====================================================================
  #
-@@ -101,7 +101,6 @@ postlog   unix-dgram n  -       n
- #  flags=DRX user=cyrus argv=/cyrus/bin/deliver -e -r ${sender} -m ${extension} ${user}
- #
- # ====================================================================
--#
- # Old example of delivery via Cyrus.
- #
- #old-cyrus unix  -       n       n       -       -       pipe
-@@ -118,16 +117,11 @@ postlog   unix-dgram n  -       n
+@@ -122,16 +122,14 @@
  #
  # Other external delivery methods.
  #
@@ -121,9 +114,12 @@ Index: postfix/conf/master.cf
 -#  ${nexthop} ${user}
 +ifmail    unix  -       n       n       -       -       pipe
 +  flags=F user=ftn argv=/usr/lib/ifmail/ifmail -r $nexthop ($recipient)
++
 +bsmtp     unix  -       n       n       -       -       pipe
-+  flags=Fq. user=bsmtp argv=/usr/lib/bsmtp/bsmtp -t$nexthop -f$sender $recipient
++  flags=Fq. user=bsmtp argv=/usr/lib/bsmtp/bsmtp -t $nexthop -f $sender $recipient
++
 +scalemail-backend unix -       n       n       -       2       pipe
 +  flags=R user=scalemail argv=/usr/lib/scalemail/bin/scalemail-store ${nexthop} ${user} ${extension}
++
 +mailman   unix  -       n       n       -       -       pipe
 +  flags=FRX user=list argv=/usr/lib/mailman/bin/postfix-to-mailman.py ${nexthop} ${user}
