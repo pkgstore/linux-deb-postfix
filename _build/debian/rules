@@ -273,7 +273,7 @@ clean-preunpatch:
 	$(checkdir)
 	dh_clean build
 	test ! -d ${base} || rm -rf ${base}
-	$(MAKE) tidy
+##	$(MAKE) tidy
 
 clean: clean-preunpatch
 	rm -rf debian/{files*,vars,*substvars,*.debhelper}
