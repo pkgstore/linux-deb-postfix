@@ -1,7 +1,5 @@
-From: Kitsune Solar <kitsune.solar@gmail.com>
-Description: Update to Postfix 3.6.2.
-
-diff -ruN postfix.orig/conf/master.cf postfix/conf/master.cf
+Index: postfix/conf/master.cf
+===================================================================
 --- postfix.orig/conf/master.cf	2021-04-20 21:48:49.000000000 +0300
 +++ postfix/conf/master.cf	2021-09-16 23:39:47.763078636 +0300
 @@ -9,14 +9,14 @@
