@@ -1,5 +1,4 @@
-Index: postfix/conf/main.cf
-===================================================================
+diff -ruN postfix.orig/conf/main.cf postfix/conf/main.cf
 --- postfix.orig/conf/main.cf	2021-03-22 14:58:15.000000000 +0300
 +++ postfix/conf/main.cf	2021-09-16 23:09:29.095126676 +0300
 @@ -75,7 +75,7 @@
