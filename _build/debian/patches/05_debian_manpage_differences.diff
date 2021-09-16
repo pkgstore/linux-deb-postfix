@@ -1,3 +1,6 @@
+From: Kitsune Solar <kitsune.solar@gmail.com>
+Description: Update to Postfix 3.6.2.
+
 diff -ruN postfix.orig/conf/postfix-files postfix/conf/postfix-files
 --- postfix.orig/conf/postfix-files	2019-01-30 01:24:42.000000000 +0300
 +++ postfix/conf/postfix-files	2021-09-16 23:20:38.095620713 +0300
