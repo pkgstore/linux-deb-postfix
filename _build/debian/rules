@@ -37,7 +37,7 @@ confdir=${base}/etc/postfix
 #  OFLAGS = -O1
 #endif
 
-OFLAGS += -O2
+OFLAGS += -O2 -flto
 SHELL=/bin/bash
 
 DEBUG += -g
@@ -73,7 +73,7 @@ TLSDOCFILES=${TLSSRC}/TLS_TODO ${TLSSRC}/TLS_ACKNOWLEDGEMENTS
 build: build-arch build-indep
 build-arch:
 	$(checkdir)
-	${MAKE} makefiles CCARGS="${CFLAGS} ${CCARGS}" DEBUG="${DEBUG}" \
+		${MAKE} makefiles CCARGS="${CPPFLAGS} ${CFLAGS} ${CCARGS}" DEBUG="${DEBUG}" \
 		AUXLIBS="${AUXLIBS} ${LDFLAGS} -L$$(pwd)/debian" OPT="$(OFLAGS)" \
 		AUXLIBS_CDB="-lcdb -L../../lib -L. -lpostfix-util" \
 		AUXLIBS_LDAP="-lldap -llber -L../../lib -L. -lpostfix-util -lpostfix-global" \
@@ -95,7 +95,7 @@ build-arch:
 
 build-indep:
 	$(checkdir)
-	${MAKE} makefiles CCARGS="${CFLAGS} ${CCARGS}" DEBUG="${DEBUG}" \
+		${MAKE} makefiles CCARGS="${CPPFLAGS} ${CFLAGS} ${CCARGS}" DEBUG="${DEBUG}" \
 		AUXLIBS="${AUXLIBS} ${LDFLAGS} -L$$(pwd)/debian" OPT="$(OFLAGS)" \
 		AUXLIBS_CDB="-lcdb -L../../lib -L. -lpostfix-util" \
 		AUXLIBS_LDAP="-lldap -llber -L../../lib -L. -lpostfix-util -lpostfix-global" \

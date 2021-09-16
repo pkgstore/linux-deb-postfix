@@ -1,4 +1,6 @@
-#!/bin/sh -e
+#!/bin/sh
+
+set -e
 
 # Debian Postfix postinst
 # LaMont Jones <lamont@debian.org>
@@ -456,7 +458,7 @@ EOF
 
     # 2.10 upgrade requires us to copy the smtpd_recipient_restrictions
     # into smtpd_relay_restrictions  Only present for upgrades from before
-    # 2.10.0-2 
+    # 2.10.0-2
     if [ -f /var/spool/postfix/set_relay_restrictions ]; then
 	# early 2.10.0 was special...  see #702374
 	# if we got here with 2.10.0 in OLDVERSION, then there is no value for

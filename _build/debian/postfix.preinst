@@ -1,4 +1,6 @@
-#!/bin/sh -e
+#!/bin/sh
+
+set -e
 
 # Debian Postfix preinst
 # LaMont Jones <lamont@debian.org>
