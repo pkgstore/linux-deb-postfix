@@ -1,8 +1,10 @@
-postfix (3.6.2-1) unstable; urgency=medium
+postfix (3.6.2-100) unstable; urgency=medium
 
-  * NEW: v3.6.2.
+  * COMMIT: 827bc9a4a5f2348c92aa7b82d5e4b8d623ff5d39.
+  * REQUESTS: +10 / +11 / +12.
+  * UPD: Move to DEB Store.
 
- -- Package Store <kitsune.solar@gmail.com>  Thu, 16 Sep 2021 14:00:00 +0300
+ -- Package Store <kitsune.solar@gmail.com>  Fri, 17 Sep 2021 07:05:32 +0000
 
 postfix (3.5.6-1) unstable; urgency=medium
 
