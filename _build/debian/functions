@@ -1,4 +1,3 @@
-DISTRO=$(lsb_release -is 2>/dev/null || echo Debian)
 addmap()
 {
     name=$1
@@ -23,18 +22,6 @@ delmap()
 	     rm ${FILE}.$$
     fi
     return 0
-}
-pathfind() {
-  OLDIFS="$IFS"
-  IFS=:
-  for p in $PATH; do
-    if [ -x "$p/$*" ]; then
-      IFS="$OLDIFS"
-      return 0
-    fi
-  done
-  IFS="$OLDIFS"
-  return 1
 }
 runnewaliases() {
     db_get postfix/main_mailer_type && mailer="$RET"

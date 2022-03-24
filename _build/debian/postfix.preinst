@@ -14,10 +14,7 @@ else
     DEBCONF=
 fi
 
-dpkg_vers=$(dpkg --status dpkg | sed -n '/Version: /s/^Version: //p')
-CONFIG=/etc/postfix/main.cf
 MASTER=/etc/postfix/master.cf
-POSTDROP=/usr/sbin/postdrop
 
 compat_conversion_warning() {
     if [ -n "$DEBCONF" ]; then
@@ -35,31 +32,6 @@ part of this upgrade, the following will be changed: (1) chrooted components
 will be changed from '-' to 'y' in master.cf, and (2) myhostname will be set
 to a fully-qualified domain name if it is not already such.  The install will
 be aborted if you do not allow the change.
-EOF
-	echo -n "Shall I make the change? "
-	read line
-	case ${line} in
-	    [nN]*)	echo "aborting postfix install"
-			exit 1;;
-	    *)		;;
-	esac
-    fi
-}
-
-lmtp_retired_warning() {
-    if [ -n "$DEBCONF" ]; then
-	db_input medium postfix/lmtp_retired_warning || true
-	db_go || true
-	db_get postfix/lmtp_retired_warning
-	if [ "$RET" = "false" ]; then
-	    echo "aborting postfix install"
-	    exit 1
-	fi
-    else
-	cat << EOF
-This upgrade of postfix drops the "lmtp" symlink, and your configuration
-(master.cf) refers to it: lmtp was merged into smtp long ago.  The install
-will be aborted if you do not allow the change.
 EOF
 	echo -n "Shall I make the change? "
 	read line
@@ -119,129 +91,6 @@ EOF
     fi
 }
 
-relay_restrictions_warning() {
-    if [ -n "$DEBCONF" ]; then
-	db_input medium postfix/relay_restrictions_warning || true
-	db_go || true
-	db_get postfix/relay_restrictions_warning
-	if [ "$RET" != "false" ]; then
-	    touch /var/spool/postfix/set_relay_restrictions
-	fi
-    else
-    	cat << EOF
-Postfix version 2.10 adds smtpd_relay_restrictions, to separate relaying
-restrictions from recipient restrictions, and you have a non-default value
-for smtpd_recipient_restrictions.
-
-Failure to do this may result in deferred or bounced mail after the
-upgrade.  Accept this option to set smtpd_relay_restrictions to
-smtpd_recipient_restrictions.
-EOF
-	echo -n "Shall I make the change? "
-	read line
-	case ${line} in
-	    [nN]*)	;;
-	    *)		touch /var/spool/postfix/set_relay_restrictions;;
-	esac
-    fi
-}
-
-mydomain_warning() {
-    if [ -n "$DEBCONF" ]; then
-	db_fset postfix/mydomain_warning seen false
-	db_input medium postfix/mydomain_warning || true
-	db_go || true
-	db_get postfix/mydomain_warning
-	if [ "$RET" = "false" ]; then
-	    echo "aborting postfix install"
-	    exit 1
-	fi
-    else
-	# no debconf, fall back
-	cat << EOF
-Postfix version 2.3.3-2 and later require changes in main.cf.
-Specifically, mydomain must be specified, since hostname(2) is not
-an FQDN.
-EOF
-	echo -n "Shall I make the change? "
-	read line
-	case ${line} in
-	    [nN]*)	echo "aborting postfix install"
-			exit 1
-			;;
-	esac
-    fi
-}
-
-retry_warning() {
-    if [ -n "$DEBCONF" ]; then
-	db_fset postfix/retry_upgrade_warning seen false
-	db_input medium postfix/retry_upgrade_warning || true
-	db_go || true
-	db_get postfix/retry_upgrade_warning
-	if [ "$RET" = "false" ]; then
-	    echo "aborting postfix install"
-	    exit 1
-	fi
-    else
-	# no debconf, fall back
-	cat << EOF
-Postfix version 2.4 requires that the retry service be added to master.cf
-EOF
-	echo -n "Shall I make the change? "
-	read line
-	case ${line} in
-	    [nN]*)	echo "aborting postfix install"
-			exit 1
-			;;
-	esac
-    fi
-}
-
-tlsmgr_warning() {
-    if [ -n "$DEBCONF" ]; then
-	db_fset postfix/tlsmgr_upgrade_warning seen false
-	db_input medium postfix/tlsmgr_upgrade_warning || true
-	db_go || true
-	db_get postfix/tlsmgr_upgrade_warning
-	if [ "$RET" = "false" ]; then
-	    echo "aborting postfix install"
-	    exit 1
-	fi
-    else
-	# no debconf, fall back
-	cat << EOF
-Postfix version 2.2 has changed the invocation of tlsmgr.
-EOF
-	echo -n "Shall I make the change? "
-	read line
-	case ${line} in
-	    [nN]*)	echo "aborting postfix install"
-			exit 1
-			;;
-	esac
-    fi
-}
-
-kernel_version_warning() {
-    if [ -n "$DEBCONF" ]; then
-	db_fset postfix/kernel_version_warning seen false
-	db_input low postfix/kernel_version_warning || true
-	db_go || true
-	db_get postfix/kernel_version_warning
-    else
-	cat << EOF
-Postfix uses features that are not found in kernels prior to 2.6.  If you
-proceeed with the installation, Postfix will not run.
-EOF
-	RET=false
-    fi
-    if [ "$RET" = "false" ]; then
-	echo "Aborting postfix install"
-	exit 1
-    fi
-}
-
 (umask 022; mkdir -p /var/spool/postfix)
 
 case "$1" in
@@ -270,6 +119,15 @@ case "$1" in
 	if [ -L /etc/postfix/postfix-script ]; then
 		rm -f /etc/postfix/postfix-script
 	fi
+
+	# If user has not modified master/main.proto, move aside so new version
+	# is installed (#991513)
+        cmp -s /usr/share/postfix/main.cf.dist /etc/postfix/main.cf.proto && \
+	    mv /etc/postfix/main.cf.proto /etc/postfix/main.cf.proto.old \
+	    || echo "/etc/postfix/main.cf.proto modified, not updating."
+        cmp -s /usr/share/postfix/master.cf.dist /etc/postfix/master.cf.proto && \
+	    mv /etc/postfix/master.cf.proto /etc/postfix/master.cf.proto.old \
+	    || echo "/etc/postfix/master.cf.proto modified, not updating."
 
 	if grep -q '^tlsmgr[[:space:]]*fifo' $MASTER; then
 	  tlsmgr_warning
@@ -313,23 +171,6 @@ case "$1" in
 	    fi
 	fi
 
-	if dpkg --compare-versions $version lt 2.10.0-2; then
-	  RECIP=$(postconf -hx smtpd_recipient_restrictions 2>/dev/null || true)
-	  DEFAULT="permit_mynetworks, reject_unauth_destination"
-	  if [ "$RECIP" != "$DEFAULT" ]; then
-	    # 2.10.0-1 is special because it was broken.  If they haven't fixed
-	    # it themselves, deal with it.
-	    if dpkg --compare-versions $version ge 2.10.0-1; then
-	      if [ -n "$RECIP" ] && [ -z "$(postconf -n smtpd_relay_restrictions)" ]; then
-		relay_restrictions_warning
-	      fi
-	    else
-	      # if they have the default recipient_restrictions then no need to ask.
-	      relay_restrictions_warning
-	    fi
-	  fi
-	fi
-
 	if ! grep -q '^retry[[:space:]]' $MASTER; then
 	  retry_warning
 	fi
@@ -337,6 +178,14 @@ case "$1" in
 	;;
 
     abort-upgrade)
+	if [ -f /etc/postfix/main.cf.proto.old ]; then
+	  mv /etc/postfix/main.cf.proto.old /etc/postfix/main.cf.proto
+	  echo "Restoring old /etc/postfix/main.cf.proto on failed upgrade."
+	fi
+	if [ -f /etc/postfix/master.cf.proto.old ]; then
+	  mv /etc/postfix/master.cf.proto.old /etc/postfix/master.cf.proto
+	  echo "Restoring old /etc/postfix/master.cf.proto on failed upgrade."
+	fi
 	;;
 
     *)
@@ -345,7 +194,7 @@ case "$1" in
 	;;
 esac
 
-if [ install = "$1" -o upgrade = "$1" ]; then
+if [ install = "$1" ] || [ upgrade = "$1" ]; then
     # cleanup after past mistakes.
     rm -f /usr/sbin/postconf.postfix
     dpkg-divert --package postfix-tls --remove \

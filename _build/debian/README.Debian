@@ -32,6 +32,33 @@ and the source from upstream:
     described in the upstream documentation is order to problem integrate with
     Debian features such as using the system CA certificate bundle and proper
     chroot configuration with system libraries and services.
+2A. Starting with Debian Bookworm (12), user specified files can be included
+    in the chroot when postfix starts.  The file /etc/default/postfix is
+    sourced into the Debian script that configures the chroot for each postfix
+    instance.  In the 'default' file, extra files can be specified in the
+    chroot_extra_files variable (quoted, space separated list for multiple
+    files) and an additional Certificate Authority directory can be specified
+    in the chroot_extra_CAdir variable, for example:
+        chroot_extra_files=/etc/ssl/certs/local-certificate.pem
+        chroot_extra_CAdir=/etc/ssl/certs/local-CA
+    This can be used to provide certificates needed for Postfix to
+    make encrypted LDAP connections, e.g. tls_ca_cert_dir or tls_cert.  See
+    ldap_table (5) or mysql_table (5) for specifics.
+    The files or directory must exist outside the chroot in the location
+    specified.  They will be created or updated within the chroot each time
+    Postfix is started or restarted.  Reload is not sufficient.
+2B. In the standard Debian networking configuration, postfix is not notified
+    if /etc/resolv.conf is updated, so the copy in the postfix chroot may
+    become stale.  This can be addressed one of two ways:
+  a.  For systemd users, a .path unit is shipped disabled (since this is only
+      relevant for some network configurations) to watch for resolv.conf
+      updates.  It needs to be manually enabled and started (once):
+# systemctl enable postfix-resolvconf.path
+# systemctl enable postfix-resolvconf.service
+# systemctl start postfix-resolvconf.path
+  b.  For users of other init systems, installation of the resolvconf package
+      should prevent this problem for networking configurations where it is an
+      issue.
 3.  For policy reasons:
   a. SASL configuration goes in /etc/postfix/sasl
   b. myhostname=/path/to/file is supported (and used) in main.cf

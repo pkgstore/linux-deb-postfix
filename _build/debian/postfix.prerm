@@ -7,6 +7,8 @@ set -e
 
 . /usr/share/postfix/postinst.functions
 
+#DEBHELPER#
+
 case "$1" in
     upgrade)
 	;;
@@ -15,13 +17,9 @@ case "$1" in
 	;;
 
     remove)
-	[ -x /usr/sbin/invoke-rc.d ] && \
-		INIT="invoke-rc.d postfix" || \
-		INIT="/etc/init.d/postfix"
-	${INIT} stop
 	rm -rf /var/spool/postfix/lib
 	rm -rf /var/spool/postfix/etc
-    	;;
+	;;
 
     failed-upgrade)
 	;;
@@ -31,5 +29,5 @@ case "$1" in
 	exit 1
 	;;
 esac
-#DEBHELPER#
+
 exit 0

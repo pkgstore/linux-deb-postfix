@@ -1,4 +1,2 @@
 # Lintian doesn't know how to parse the damn files.
-postfix: postinst-unsafe-ldconfig
-postfix: postrm-unsafe-ldconfig
 postfix: missing-debconf-dependency-for-preinst

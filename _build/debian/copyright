@@ -580,5 +580,30 @@ The following license applies to src/util/strcasecmp.c:
  * SUCH DAMAGE.
  */
 
-    $Revision: 1.1.4.3 $, Last updated $Date: 2003/07/23 16:13:15 $
+The following license information is taken from the legacy TLS_LICENSE file
+included in the upstream release.  It is not clear which files, if any it
+applies to:
 
+Author:
+=======
+- Postfix/TLS support was originally developed by Lutz Jaenicke of
+  Brandenburg University of Technology, Cottbus, Germany.
+
+License:
+========
+- This software is free. You can do with it whatever you want.
+  I would however kindly ask you to acknowledge the use of this
+  package, if you are going use it in your software, which you might
+  be going to distribute. I would also like to receive a note if
+  you are a satisfied user :-)
+
+For src/tls/mkcert.sh the following applies:
+
+# Copyright (c) 2016 Viktor Dukhovni <openssl-users@dukhovni.org>.
+# All rights reserved.
+#
+# Licensed under the terms of the Postfix SECURE MAILER license
+# included with the Postfix source code.
+#
+# This file is dual-licensed and is also available under other terms.
+# Please contact the author.

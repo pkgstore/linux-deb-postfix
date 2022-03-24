@@ -10,15 +10,13 @@ set -e
 # Use debconf.
 . /usr/share/debconf/confmodule
 CHROOT=/var/spool/postfix
-config_directory="/etc/postfix"		# make variable expansion easier...
 
 . /usr/share/postfix/postinst.functions
 
 set_maildrop_perms() {
     MAILDROP=${CHROOT}/maildrop
-    SCRIPT=/etc/postfix/postfix-script
     POSTDROP=/usr/sbin/postdrop
-    mkdir -p $MAILDROP
+    mkdir -pZ $MAILDROP
     if ! chown postfix:postdrop $MAILDROP 2>/dev/null; then
 	addgroup --system postdrop
 	chown postfix:postdrop $MAILDROP
@@ -31,8 +29,7 @@ set_maildrop_perms() {
     dpkg-statoverride --update --add root postdrop 02555 /usr/sbin/postqueue
     chmod 1730 $MAILDROP
     # Make SE Linux happy (hopefully)
-    if pathfind restorecon; then
-	restorecon "$MAILDROP"
+    if command -v restorecon >/dev/null; then
 	restorecon "$POSTDROP"
 	restorecon /var/spool/postfix/public
 	restorecon /usr/sbin/postqueue
@@ -43,23 +40,22 @@ myfqdn() {
     myhostname=$(hostname --fqdn 2>/dev/null || echo "")
     # If we don't have a name with a dot (which includes ""), then we have work.
     if [ $myhostname = ${myhostname%.*} ]; then
-        # If it's empty, and we have /etc/hostname, try that.
-        if [ -z $myhostname ] && [ -r /etc/hostname ]; then
-            myhostname=$(cat /etc/hostname)
-        fi
-        # If we are still lacking a domain component, then try resolv.conf.
-        if [ $myhostname = ${myhostname%.*} ]; then
-            if [ -f /etc/resolv.conf ]; then
-                # The resolver uses the last one found, and ignores the rest
-                mydom=$(sed -n 's/^search[[:space:]]*\.*\([^[:space:]]*\).*/\1/p;s/^domain[[:space:]]*\.*\([^[:space:]]*\).*/\1/p' /etc/resolv.conf | tail -1)
-                myhostname="$myhostname${mydom:+.$mydom}"
-            else
-                myhostname="$myhostname.UNKNOWN"
-            fi
-        fi
+	# If it's empty, and we have /etc/hostname, try that.
+	if [ -z $myhostname ] && [ -r /etc/hostname ]; then
+	    myhostname=$(cat /etc/hostname)
+	fi
+	# If we are still lacking a domain component, then try resolv.conf.
+	if [ $myhostname = ${myhostname%.*} ]; then
+	    if [ -f /etc/resolv.conf ]; then
+		# The resolver uses the last one found, and ignores the rest
+		mydom=$(sed -n 's/^search[[:space:]]*\.*\([^[:space:]]*\).*/\1/p;s/^domain[[:space:]]*\.*\([^[:space:]]*\).*/\1/p' /etc/resolv.conf | tail -1)
+		myhostname="$myhostname${mydom:+.${mydom%.}}"
+	    else
+		myhostname="$myhostname.UNKNOWN"
+	    fi
+	fi
     fi
-    # Remove all trailing dot's.
-    echo "${myhostname%"${myhostname##*[!.]}"}"
+    echo $myhostname
 }
 
 fset_all_changed() {
@@ -82,12 +78,11 @@ set_postconf() {
 }
 
 makedir() {
-    if [ ! -d $1 ]; then
-	mkdir $1
-        if pathfind restorecon; then restorecon "$1"
-        fi
+    if [ ! -d "$1" ]; then
+	mkdir -Z "$1"
     fi
-    chown $2 $1 && chmod $3 $1
+    chown $2 "$1"
+    chmod $3 "$1"
 }
 
 fix_master() {
@@ -194,8 +189,6 @@ esac
 
 CHANGES=""
 
-ldconfig
-
 dpkg-divert --package postfix --remove --rename \
 	--divert /usr/share/man/man8/smtpd.real.8.gz \
 	/usr/share/man/man8/smtpd.8.gz > /dev/null 2>&1
@@ -296,6 +289,14 @@ if [ -d /etc/postfix/maildrop ]; then
     rmdir /etc/postfix/maildrop 2>/dev/null
 fi
 
+# cleanup old ca-certificates.crt that should never have been in chroot #991609
+# can be removed after bookworm release
+ca_bundle=/var/spool/postfix/etc/ssl/certs/ca-certificates.crt
+if [ -f $ca_bundle ]; then
+    echo Removing unneeded chroot file $ca_bundle
+    rm -f $ca_bundle
+fi
+
 set_maildrop_perms postdrop
 
 if [ "$mailer" != "No configuration" ]; then	# [
@@ -304,7 +305,7 @@ if [ "$mailer" != "No configuration" ]; then	# [
 
     # Fix master.cf for compat changes in 3.0.  See Debian bug #816172
     # Also fix myhostname if needed.
-    if `dpkg --compare-versions "$2" lt 3.1.0-1~`; then
+    if dpkg --compare-versions "$2" lt 3.1.0-1~; then
 	for dir in /etc/postfix $(postconf -hxn multi_instance_directories); do
 	    hname=$(postconf -hx -c "$dir" myhostname)
             if [ "${hname}" = "${hname%.*}" ]; then
@@ -432,7 +433,11 @@ EOF
 
     db_fget postfix/main_mailer_type changed
     if [ "$RET" = "true" ]; then
-	dtrans=smtp
+	# If the user has picked something other than smtp, keep it
+	dtrans=$(postconf -hx default_transport)
+	if [ $(postconf -hx default_transport) = error ]; then
+	    dtrans=smtp
+	fi
 	# already have mailer
 	case "$mailer" in
 	    "Local only")	val=loopback-only; dtrans=error;;
@@ -459,7 +464,7 @@ EOF
 
     # 2.10 upgrade requires us to copy the smtpd_recipient_restrictions
     # into smtpd_relay_restrictions  Only present for upgrades from before
-    # 2.10.0-2
+    # 2.10.0-2 
     if [ -f /var/spool/postfix/set_relay_restrictions ]; then
 	# early 2.10.0 was special...  see #702374
 	# if we got here with 2.10.0 in OLDVERSION, then there is no value for
@@ -499,7 +504,8 @@ EOF
 
     if [ -z "$CHANGES" ]; then
 	MSG="configuration was not changed"
-    else if [ -n "$NEWCONF" ]; then
+    else
+	if [ -n "$NEWCONF" ]; then
 	    MSG="is now set up with a default configuration"
 	else
 	    MSG="is now set up with the changes above"
@@ -581,17 +587,19 @@ fi
 # Make sure we have main/master.cf.proto for multi-inst (#838528)
 if [ ! -f /etc/postfix/main.cf.proto ]; then
     cp /usr/share/postfix/main.cf.dist /etc/postfix/main.cf.proto
+    rm -rf /etc/postfix/main.cf.proto.old
 fi
 if [ ! -f /etc/postfix/master.cf.proto ]; then
     cp /usr/share/postfix/master.cf.dist /etc/postfix/master.cf.proto
+    rm -rf /etc/postfix/master.cf.proto.old
 fi
 
 if [ "$mailer" != "No configuration" ] || [ -f /etc/postfix/main.cf ]; then
     aliastype=$(postconf -h alias_database | cut -f1 -d:)
-    if ( [ "$aliastype" != "ldap" ] && [ "$aliastype" != "lmdb" ] && \
+    if [ "$aliastype" != "ldap" ] && [ "$aliastype" != "lmdb" ] && \
         [ "$aliastype" != "cdb" ] && [ "$aliastype" != "pcre" ] && \
         [ "$aliastype" != "mysql" ] && [ "$aliastype" != "pgsql" ] && \
-        [ "$aliastype" != "sqlite"  ] ) ; then
+        [ "$aliastype" != "sqlite"  ] ; then
         runnewaliases
     else
         echo "Newaliases not run - external map type.  Ensure postfix-$aliastype is installed."

@@ -1,8 +1,8 @@
-Index: postfix-dev/conf/postfix-script
+Index: postfix/conf/postfix-script
 ===================================================================
---- postfix-dev.orig/conf/postfix-script	2019-03-01 11:47:22.941749233 -0500
-+++ postfix-dev/conf/postfix-script	2019-03-01 11:47:22.937749233 -0500
-@@ -341,9 +341,14 @@
+--- postfix.orig/conf/postfix-script
++++ postfix/conf/postfix-script
+@@ -314,9 +314,17 @@ check-warn)
  	find $todo ! -user root \
  	    -exec $WARN not owned by root: {} \;
  
@@ -12,7 +12,10 @@ Index: postfix-dev/conf/postfix-script
  	    -exec $WARN group or other writable: {} \;
  
 +	find $todo -type l | while read f; do \
-+	    readlink "$f" | grep -q / && $WARN symlink leaves directory: "$f"; \
++	    # makedefs out known to be a symlink and OK
++	    if [ "$f" != "/etc/postfix/./makedefs.out" ]; then \
++	      readlink "$f" | grep -q / && $WARN symlink leaves directory: "$f"; \
++	    fi \
 +	done; \
 +
  	# Check Postfix mail_owner-owned directory tree owner/permissions.

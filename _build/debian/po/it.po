@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: postfix 2.9.1-2\n"
 "Report-Msgid-Bugs-To: postfix@packages.debian.org\n"
-"POT-Creation-Date: 2018-12-10 02:32-0500\n"
+"POT-Creation-Date: 2021-12-28 14:12-0500\n"
 "PO-Revision-Date: 2016-03-04 23:04+0100\n"
 "Last-Translator: Cristian Rigamonti <cri@linux.it>\n"
 "Language-Team: Italian <debian-l10n-italian@lists.debian.org>\n"
@@ -18,116 +18,38 @@ msgstr ""
 #. Type: boolean
 #. Description
 #: ../templates:1001
-msgid "Add a 'mydomain' entry in main.cf for upgrade?"
-msgstr "Aggiungere una voce «mydomain» a main.cf per l'aggiornamento?"
-
-#. Type: boolean
-#. Description
-#: ../templates:1001
-msgid ""
-"Postfix version 2.3.3-2 and later require changes in main.cf. Specifically, "
-"mydomain must be specified, since hostname(1) is not a fully qualified "
-"domain name (FQDN)."
-msgstr ""
-"Postfix a partire dalla versione 2.3.3-2 richiede delle modifiche in main."
-"cf. In particolare, mydomain deve essere specificato, visto che hostname(1) "
-"non è un nome di dominio pienamente qualificato (FQDN)."
-
-#. Type: boolean
-#. Description
-#: ../templates:1001
-msgid ""
-"Failure to fix this will result in a broken mailer. Decline this option to "
-"abort the upgrade, giving you the opportunity to add this configuration "
-"yourself. Accept this option to automatically set mydomain based on the FQDN "
-"of the machine."
-msgstr ""
-"Se non si corregge questa impostazione, il programma sarà inutilizzabile. "
-"Rifiutando questa proposta, l'aggiornamento verrà annullato e si potrà "
-"eseguire manualmente la modifica alla configurazione. Accettando la proposta "
-"il valore di mydomain sarà impostato automaticamente al FQDN del sistema."
-
-#. Type: boolean
-#. Description
-#: ../templates:2001
-msgid "Set smtpd_relay_restrictions in main.cf for upgrade?"
-msgstr "Impostare smtpd_relay_restrictions nel main.cf per l'aggiornamento?"
-
-#. Type: boolean
-#. Description
-#: ../templates:2001
-msgid ""
-"Postfix version 2.10 adds smtpd_relay_restrictions, to separate relaying "
-"restrictions from recipient restrictions, and you have a non-default value "
-"for smtpd_recipient_restrictions."
-msgstr ""
-"Postfix versione 2.10 aggiunge il parametro smtpd_relay_restrictions per "
-"separare le restrizioni relative all'inoltro da quelle relative ai "
-"destinatari, ed è impostato un valore non predefinito per "
-"smtpd_recipient_restrictions."
-
-#. Type: boolean
-#. Description
-#: ../templates:2001
-msgid ""
-"Failure to do this may result in deferred or bounced mail after the "
-"upgrade.  Accept this option to set smtpd_relay_restrictions equal to "
-"smtpd_recipient_restrictions."
-msgstr ""
-"Se questo non viene fatto, dopo l'aggiornamento si potrebbe avere posta in "
-"ritardo o restituita. Accettare questa opzione per impostare il parametro "
-"smtpd_recipient_restrictions uguale a smtpd_relay_restrictions."
-
-#. Type: boolean
-#. Description
-#: ../templates:3001
 msgid "Update configuration to avoid compatibility warnings?"
 msgstr ""
 
 #. Type: boolean
 #. Description
-#: ../templates:3001
+#: ../templates:1001
 msgid ""
-"This upgrade of postfix changes some default values in the configuration. As "
+"This upgrade of Postfix changes some default values in the configuration. As "
 "part of this upgrade, the following will be changed: (1) chrooted components "
 "will be changed from '-' to 'y' in master.cf, and (2) myhostname will be set "
-"to a fully-qualified domain name if it is not already such.  The install "
-"will be aborted if you do not allow the change."
+"to a fully-qualified domain name if it is not already such. The install will "
+"be aborted if you do not allow the change."
 msgstr ""
 
 #. Type: boolean
 #. Description
-#: ../templates:4001
-msgid "Update master.cf for merged lmtp/smtp binary?"
-msgstr ""
-
-#. Type: boolean
-#. Description
-#: ../templates:4001
-msgid ""
-"This upgrade of postfix drops the \"lmtp\" symlink, and your configuration "
-"(master.cf) refers to it: lmtp was merged into smtp long ago.  The install "
-"will be aborted if you do not allow the change."
-msgstr ""
-
-#. Type: boolean
-#. Description
-#: ../templates:5001
+#: ../templates:2001
 msgid "Update main.cf for daemon_directory change?"
 msgstr ""
 
 #. Type: boolean
 #. Description
-#: ../templates:5001
+#: ../templates:2001
 msgid ""
-"This upgrade of postfix changes where daemons are located, and your postfix "
-"configuration explicitly specifies the old location.  The install will be "
+"This upgrade of Postfix changes where daemons are located, and your Postfix "
+"configuration explicitly specifies the old location. The install will be "
 "aborted if you do not allow the change."
 msgstr ""
 
 #. Type: boolean
 #. Description
-#: ../templates:6001
+#: ../templates:3001
 #, fuzzy
 #| msgid "Update dynamicmaps.cf for 3.0"
 msgid "Update dynamicmaps.cf for 3.0?"
@@ -135,10 +57,15 @@ msgstr "Aggiornamento dynamicmaps.cf per 3.0"
 
 #. Type: boolean
 #. Description
-#: ../templates:6001
+#: ../templates:3001
+#, fuzzy
+#| msgid ""
+#| "Postfix version 3.0 changes how dynamic maps are delivered, and your "
+#| "dynamicmaps.cf does not reflect that.  Accept this option to convert "
+#| "dynamicmaps.cf to the version required for 3.0."
 msgid ""
 "Postfix version 3.0 changes how dynamic maps are delivered, and your "
-"dynamicmaps.cf does not reflect that.  Accept this option to convert "
+"dynamicmaps.cf does not reflect that. Accept this option to convert "
 "dynamicmaps.cf to the version required for 3.0."
 msgstr ""
 "Postfix versione 3.0 cambia il modo in cui le mappe dinamiche vengono "
@@ -148,106 +75,7 @@ msgstr ""
 
 #. Type: boolean
 #. Description
-#: ../templates:7001
-msgid "Add 'sqlite' entry to dynamicmaps.cf?"
-msgstr "Aggiungere la voce «sqlite» a dynamicmaps.cf?"
-
-#. Type: boolean
-#. Description
-#: ../templates:7001
-msgid ""
-"Postfix version 2.9 adds sqlite support to maps, but your dynamicmaps.cf "
-"does not reflect that.  Accept this option to add support for sqlite maps."
-msgstr ""
-"Postfix versione 2.9 aggiunge il supporto sqlite per le mappe, ma "
-"dynamicmaps.cf in uso non supporta questa aggiunta. Accettare questa opzione "
-"per abilitare il supporto alle mappe sqlite."
-
-#. Type: boolean
-#. Description
-#: ../templates:8001
-msgid "Install postfix despite an unsupported kernel?"
-msgstr "Installare postfix anche se il kernel non è supportato?"
-
-#. Type: boolean
-#. Description
-#: ../templates:8001
-msgid ""
-"Postfix uses features that are not found in kernels prior to 2.6. If you "
-"proceed with the installation, Postfix will not run."
-msgstr ""
-"Postfix usa funzionalità che non sono disponibili nelle versioni del kernel "
-"precedenti alla 2.6. Se si procede con l'installazione, Postfix non verrà "
-"eseguito."
-
-#. Type: boolean
-#. Description
-#: ../templates:9001
-msgid "Correct retry entry in master.cf for upgrade?"
-msgstr "Correggere la voce retry in master.cf per l'aggiornamento?"
-
-#. Type: boolean
-#. Description
-#: ../templates:9001
-msgid ""
-"Postfix version 2.4 requires that the retry service be added to master.cf."
-msgstr ""
-"La versione 2.4 di postfix richiede di aggiungere il servizio retry a master."
-"cf."
-
-# | msgid ""
-# | "Failure to fix this will result in a broken mailer.  Decline this option "
-# | "to abort the upgrade, giving you the opportunity to add this "
-# | "configuration yourself.  Accept this option to automatically make master."
-# | "cf compatible with Postfix 2.2 in this respect."
-#. Type: boolean
-#. Description
-#: ../templates:9001
-msgid ""
-"Failure to fix this will result in a broken mailer. Decline this option to "
-"abort the upgrade, giving you the opportunity to add this configuration "
-"yourself. Accept this option to automatically make master.cf compatible with "
-"Postfix 2.4 in this respect."
-msgstr ""
-"Se non si corregge questa impostazione, il programma sarà inutilizzabile. "
-"Rifiutando questa proposta, l'aggiornamento verrà annullato e si avrà la "
-"possibilità di modificare manualmente la configurazione. Accettando la "
-"proposta si renderà master.cf compatibile con Postfix 2.4 in modo automatico."
-
-#. Type: boolean
-#. Description
-#: ../templates:10001
-msgid "Correct tlsmgr entry in master.cf for upgrade?"
-msgstr "Correggere la voce tlsmgr in master.cf per l'aggiornamento?"
-
-#. Type: boolean
-#. Description
-#: ../templates:10001
-msgid "Postfix version 2.2 has changed the invocation of tlsmgr."
-msgstr "Nella versione 2.2 di postfix è cambiata l'invocazione di tlsmgr."
-
-# | msgid ""
-# | "Failure to fix this will result in a broken mailer.  Decline this option "
-# | "to abort the upgrade, giving you the opportunity to add this "
-# | "configuration yourself.  Accept this option to automatically make master."
-# | "cf compatible with Postfix 2.2 in this respect."
-#. Type: boolean
-#. Description
-#: ../templates:10001
-msgid ""
-"Failure to fix this will result in a broken mailer. Decline this option to "
-"abort the upgrade, giving you the opportunity to add this configuration "
-"yourself. Accept this option to automatically make master.cf compatible with "
-"Postfix 2.2 in this respect."
-msgstr ""
-"Se non si corregge questa impostazione, il programma sarà inutilizzabile. "
-"Rifiutando questa proposta, l'aggiornamento verrà annullato e si avrà la "
-"possibilità di eseguire manualmente la configurazione. Accettando la "
-"proposta si renderà master.cf compatibile con Postfix 2.2 in modo automatico."
-
-#. Type: boolean
-#. Description
-#: ../templates:11001
+#: ../templates:4001
 msgid "Ignore incorrect hostname entry?"
 msgstr "Ignorare la voce hostname errata?"
 
@@ -255,7 +83,7 @@ msgstr "Ignorare la voce hostname errata?"
 # | "does not follow RFC 1035 and does not appear to be a valid IP address."
 #. Type: boolean
 #. Description
-#: ../templates:11001
+#: ../templates:4001
 msgid ""
 "The string '${enteredstring}' does not follow RFC 1035 and does not appear "
 "to be a valid IP address."
@@ -265,7 +93,7 @@ msgstr ""
 
 #. Type: boolean
 #. Description
-#: ../templates:11001
+#: ../templates:4001
 msgid ""
 "RFC 1035 states that 'each component must start with an alphanum, end with "
 "an alphanum and contain only alphanums and hyphens. Components must be "
@@ -278,8 +106,10 @@ msgstr ""
 # | msgid "Do you want to keep it anyway?"
 #. Type: boolean
 #. Description
-#: ../templates:11001
-msgid "Please choose whether you want to keep that choice anyway."
+#: ../templates:4001
+#, fuzzy
+#| msgid "Please choose whether you want to keep that choice anyway."
+msgid "Please check and confirm if you want to keep your entry."
 msgstr "Scegliere se si desidera mantenere questa scelta comunque."
 
 # | msgid "General type of configuration?"
@@ -291,7 +121,7 @@ msgstr "Scegliere se si desidera mantenere questa scelta comunque."
 #. try to keep below ~71 characters.
 #. DO NOT USE commas (,) in Choices translations otherwise
 #. this will break the choices shown to users
-#: ../templates:12001
+#: ../templates:5001
 msgid "No configuration"
 msgstr "Nessuna configurazione"
 
@@ -303,7 +133,7 @@ msgstr "Nessuna configurazione"
 #. try to keep below ~71 characters.
 #. DO NOT USE commas (,) in Choices translations otherwise
 #. this will break the choices shown to users
-#: ../templates:12001
+#: ../templates:5001
 msgid "Internet Site"
 msgstr "Sito internet"
 
@@ -315,7 +145,7 @@ msgstr "Sito internet"
 #. try to keep below ~71 characters.
 #. DO NOT USE commas (,) in Choices translations otherwise
 #. this will break the choices shown to users
-#: ../templates:12001
+#: ../templates:5001
 msgid "Internet with smarthost"
 msgstr "Sito internet con smarthost"
 
@@ -327,7 +157,7 @@ msgstr "Sito internet con smarthost"
 #. try to keep below ~71 characters.
 #. DO NOT USE commas (,) in Choices translations otherwise
 #. this will break the choices shown to users
-#: ../templates:12001
+#: ../templates:5001
 msgid "Satellite system"
 msgstr "Sistema satellite"
 
@@ -339,20 +169,22 @@ msgstr "Sistema satellite"
 #. try to keep below ~71 characters.
 #. DO NOT USE commas (,) in Choices translations otherwise
 #. this will break the choices shown to users
-#: ../templates:12001
+#: ../templates:5001
 msgid "Local only"
 msgstr "Solo locale"
 
 # | msgid "General type of configuration?"
 #. Type: select
 #. Description
-#: ../templates:12002
-msgid "General type of mail configuration:"
+#: ../templates:5002
+#, fuzzy
+#| msgid "General type of mail configuration:"
+msgid "General mail configuration type:"
 msgstr "Profilo generale di configurazione:"
 
 #. Type: select
 #. Description
-#: ../templates:12002
+#: ../templates:5002
 msgid ""
 "Please select the mail server configuration type that best meets your needs."
 msgstr ""
@@ -360,7 +192,22 @@ msgstr ""
 
 #. Type: select
 #. Description
-#: ../templates:12002
+#: ../templates:5002
+#, fuzzy
+#| msgid ""
+#| " No configuration:\n"
+#| "  Should be chosen to leave the current configuration unchanged.\n"
+#| " Internet site:\n"
+#| "  Mail is sent and received directly using SMTP.\n"
+#| " Internet with smarthost:\n"
+#| "  Mail is received directly using SMTP or by running a utility such\n"
+#| "  as fetchmail. Outgoing mail is sent using a smarthost.\n"
+#| " Satellite system:\n"
+#| "  All mail is sent to another machine, called a 'smarthost', for "
+#| "delivery.\n"
+#| " Local only:\n"
+#| "  The only delivered mail is the mail for local users. There is no "
+#| "network."
 msgid ""
 " No configuration:\n"
 "  Should be chosen to leave the current configuration unchanged.\n"
@@ -370,9 +217,11 @@ msgid ""
 "  Mail is received directly using SMTP or by running a utility such\n"
 "  as fetchmail. Outgoing mail is sent using a smarthost.\n"
 " Satellite system:\n"
-"  All mail is sent to another machine, called a 'smarthost', for delivery.\n"
+"  All mail is sent to another machine, called a 'smarthost', for\n"
+"  delivery.\n"
 " Local only:\n"
-"  The only delivered mail is the mail for local users. There is no network."
+"  The only delivered mail is the mail for local users. There is no\n"
+"  network."
 msgstr ""
 " Nessuna configurazione:\n"
 "  Da scegliere se non si vuole modificare la configurazione attuale.\n"
@@ -391,7 +240,7 @@ msgstr ""
 # | msgid "WARNING: Postfix not configured"
 #. Type: error
 #. Description
-#: ../templates:13001
+#: ../templates:6001
 msgid "Postfix not configured"
 msgstr "Postfix non è configurato"
 
@@ -401,7 +250,7 @@ msgstr "Postfix non è configurato"
 # | "a later date, or configure it yourself by:"
 #. Type: error
 #. Description
-#: ../templates:13001
+#: ../templates:6001
 #, fuzzy
 #| msgid ""
 #| "You have chosen 'No Configuration'. Postfix will not be configured and "
@@ -425,18 +274,24 @@ msgstr ""
 # | msgid "/etc/mailname"
 #. Type: string
 #. Description
-#: ../templates:14001
+#: ../templates:7001
 msgid "System mail name:"
 msgstr "Nome del sistema per la posta:"
 
 #. Type: string
 #. Description
-#: ../templates:14001
+#: ../templates:7001
+#, fuzzy
+#| msgid ""
+#| "The \"mail name\" is the domain name used to \"qualify\" _ALL_ mail "
+#| "addresses without a domain name. This includes mail to and from <root>: "
+#| "please do not make your machine send out mail from root@example.org "
+#| "unless root@example.org has told you to."
 msgid ""
-"The \"mail name\" is the domain name used to \"qualify\" _ALL_ mail "
-"addresses without a domain name. This includes mail to and from <root>: "
-"please do not make your machine send out mail from root@example.org unless "
-"root@example.org has told you to."
+"The 'mail name' is the domain name used to 'qualify' _ALL_ mail addresses "
+"without a domain name. This includes mail to and from <root>: please do not "
+"make your machine send out mail from root@example.org unless root@example."
+"org has told you to."
 msgstr ""
 "Il «mail name» è il nome di dominio usato per «qualificare» _TUTTI_ gli "
 "indirizzi di posta che non contengono un nome di dominio. Questo comprende "
@@ -450,7 +305,7 @@ msgstr ""
 # | "originate."
 #. Type: string
 #. Description
-#: ../templates:14001
+#: ../templates:7001
 msgid ""
 "This name will also be used by other programs. It should be the single, "
 "fully qualified domain name (FQDN)."
@@ -460,9 +315,9 @@ msgstr ""
 
 #. Type: string
 #. Description
-#. Translators, please do NOT translate 'example.org' whch is registered
+#. Translators, please do NOT translate 'example.org' which is registered
 #. as a domain name reserved for documentation as per RFC 2606
-#: ../templates:14001
+#: ../templates:7001
 msgid ""
 "Thus, if a mail address on the local host is foo@example.org, the correct "
 "value for this option would be example.org."
@@ -473,7 +328,7 @@ msgstr ""
 # | msgid "Other destinations to accept mail for? (blank for none)"
 #. Type: string
 #. Description
-#: ../templates:15001
+#: ../templates:8001
 msgid "Other destinations to accept mail for (blank for none):"
 msgstr ""
 "Altre destinazioni per cui accettare posta (lasciare in bianco se non ce ne "
@@ -485,7 +340,7 @@ msgstr ""
 # | "probably want to include the top-level domain."
 #. Type: string
 #. Description
-#: ../templates:15001
+#: ../templates:8001
 msgid ""
 "Please give a comma-separated list of domains for which this machine should "
 "consider itself the final destination. If this is a mail domain gateway, you "
@@ -499,7 +354,7 @@ msgstr ""
 # | msgid "SMTP relay host? (blank for none)"
 #. Type: string
 #. Description
-#: ../templates:16001
+#: ../templates:9001
 msgid "SMTP relay host (blank for none):"
 msgstr "Host da usare come relay SMTP (lasciare in bianco se non viene usato):"
 
@@ -509,7 +364,7 @@ msgstr "Host da usare come relay SMTP (lasciare in bianco se non viene usato):"
 # | "host."
 #. Type: string
 #. Description
-#: ../templates:16001
+#: ../templates:9001
 msgid ""
 "Please specify a domain, host, host:port, [address] or [address]:port. Use "
 "the form [destination] to turn off MX lookups. Leave this blank for no relay "
@@ -521,7 +376,7 @@ msgstr ""
 
 #. Type: string
 #. Description
-#: ../templates:16001
+#: ../templates:9001
 msgid "Do not specify more than one host."
 msgstr "Non specificare più di un host."
 
@@ -531,11 +386,16 @@ msgstr "Non specificare più di un host."
 # | "is given, mail is routed directly to the destination."
 #. Type: string
 #. Description
-#: ../templates:16001
+#: ../templates:9001
+#, fuzzy
+#| msgid ""
+#| "The relayhost parameter specifies the default host to send mail to when "
+#| "no entry is matched in the optional transport(5) table. When no relay "
+#| "host is given, mail is routed directly to the destination."
 msgid ""
-"The relayhost parameter specifies the default host to send mail to when no "
-"entry is matched in the optional transport(5) table. When no relay host is "
-"given, mail is routed directly to the destination."
+"The relayhost parameter specifies the default external host to send mail to "
+"when no entry is matched in the optional transport(5) table. When no relay "
+"host is given, mail is routed directly to the destination."
 msgstr ""
 "Il parametro «relayhost» indica l'host predefinito a cui inviare la posta "
 "quando non viene trovata alcuna corrispondenza nella tabella opzionale "
@@ -544,20 +404,20 @@ msgstr ""
 
 #. Type: boolean
 #. Description
-#: ../templates:17001
+#: ../templates:10001
 msgid "Use procmail for local delivery?"
 msgstr "Usare procmail per la consegna locale?"
 
 # | msgid "Do you want to use procmail to deliver local mail?"
 #. Type: boolean
 #. Description
-#: ../templates:17001
+#: ../templates:10001
 msgid "Please choose whether you want to use procmail to deliver local mail."
 msgstr "Indicare se si vuole usare procmail per consegnare la posta locale."
 
 #. Type: boolean
 #. Description
-#: ../templates:17001
+#: ../templates:10001
 msgid ""
 "Note that if you use procmail to deliver mail system-wide, you should set up "
 "an alias that forwards mail for root to a real user."
@@ -568,31 +428,31 @@ msgstr ""
 
 #. Type: select
 #. Choices
-#: ../templates:18001
+#: ../templates:11001
 msgid "all"
 msgstr "tutti"
 
 #. Type: select
 #. Choices
-#: ../templates:18001
+#: ../templates:11001
 msgid "ipv6"
 msgstr "ipv6"
 
 #. Type: select
 #. Choices
-#: ../templates:18001
+#: ../templates:11001
 msgid "ipv4"
 msgstr "ipv4"
 
 #. Type: select
 #. Description
-#: ../templates:18002
+#: ../templates:11002
 msgid "Internet protocols to use:"
 msgstr "Protocolli internet da usare:"
 
 #. Type: select
 #. Description
-#: ../templates:18002
+#: ../templates:11002
 msgid ""
 "By default, whichever Internet protocols are enabled on the system at "
 "installation time will be used. You may override this default with any of "
@@ -604,7 +464,7 @@ msgstr ""
 
 #. Type: select
 #. Description
-#: ../templates:18002
+#: ../templates:11002
 msgid ""
 " all : use both IPv4 and IPv6 addresses;\n"
 " ipv6: listen only on IPv6 addresses;\n"
@@ -617,30 +477,34 @@ msgstr ""
 # | msgid "Local address extension character?"
 #. Type: string
 #. Description
-#: ../templates:19001
+#: ../templates:12001
 msgid "Local address extension character:"
 msgstr "Carattere per le estensioni degli indirizzi locali:"
 
 # | msgid "What character defines a local address extension?"
 #. Type: string
 #. Description
-#: ../templates:19001
+#: ../templates:12001
+#, fuzzy
+#| msgid ""
+#| "Please choose the character that will be used to define a local address "
+#| "extension."
 msgid ""
-"Please choose the character that will be used to define a local address "
-"extension."
+"Please choose a character used as recipient delimiter that will indicate a "
+"local address extension."
 msgstr ""
 "Scegliere il carattere da usare per definire le estensioni degli indirizzi "
 "locali."
 
 #. Type: string
 #. Description
-#: ../templates:19001
+#: ../templates:12001
 msgid "To not use address extensions, leave the string blank."
 msgstr "Per non usare le estensioni degli indirizzi, lasciare in bianco."
 
 #. Type: error
 #. Description
-#: ../templates:20001
+#: ../templates:13001
 msgid "Bad recipient delimiter"
 msgstr "Delimitatore destinatario errato."
 
@@ -649,7 +513,7 @@ msgstr "Delimitatore destinatario errato."
 # | "characters.  Please try again."
 #. Type: error
 #. Description
-#: ../templates:20001
+#: ../templates:13001
 msgid ""
 "The recipient delimiter must be a single character. '${enteredstring}' is "
 "what you entered."
@@ -659,7 +523,7 @@ msgstr ""
 
 #. Type: boolean
 #. Description
-#: ../templates:21001
+#: ../templates:14001
 msgid "Force synchronous updates on mail queue?"
 msgstr "Forzare gli aggiornamenti sincroni della coda di posta?"
 
@@ -670,7 +534,7 @@ msgstr "Forzare gli aggiornamenti sincroni della coda di posta?"
 # | "a journaled filesystem (such as ext3)."
 #. Type: boolean
 #. Description
-#: ../templates:21001
+#: ../templates:14001
 msgid ""
 "If synchronous updates are forced, then mail is processed more slowly. If "
 "not forced, then there is a remote chance of losing some mail if the system "
@@ -686,7 +550,7 @@ msgstr ""
 # | msgid "Local networks?"
 #. Type: string
 #. Description
-#: ../templates:22001
+#: ../templates:15001
 msgid "Local networks:"
 msgstr "Reti locali:"
 
@@ -695,7 +559,7 @@ msgstr "Reti locali:"
 # | "just the local host, which is needed by some mail user agents."
 #. Type: string
 #. Description
-#: ../templates:22001
+#: ../templates:15001
 msgid ""
 "Please specify the network blocks for which this host should relay mail. The "
 "default is just the local host, which is needed by some mail user agents. "
@@ -713,7 +577,7 @@ msgstr ""
 # | "netblocks here, or mail will be rejected rather than relayed."
 #. Type: string
 #. Description
-#: ../templates:22001
+#: ../templates:15001
 msgid ""
 "If this host is a smarthost for a block of machines, you need to specify the "
 "netblocks here, or mail will be rejected rather than relayed."
@@ -727,9 +591,13 @@ msgstr ""
 # | "an empty string."
 #. Type: string
 #. Description
-#: ../templates:22001
+#: ../templates:15001
+#, fuzzy
+#| msgid ""
+#| "To use the postfix default (which is based on the connected subnets), "
+#| "leave this blank."
 msgid ""
-"To use the postfix default (which is based on the connected subnets), leave "
+"To use the Postfix default (which is based on the connected subnets), leave "
 "this blank."
 msgstr ""
 "Per usare il valore predefinito di postfix (che è basato sulle sottoreti a "
@@ -738,7 +606,7 @@ msgstr ""
 # | msgid "Mailbox size limit"
 #. Type: string
 #. Description
-#: ../templates:23001
+#: ../templates:16001
 msgid "Mailbox size limit (bytes):"
 msgstr "Limite di dimensione delle mailbox (byte):"
 
@@ -748,11 +616,17 @@ msgstr "Limite di dimensione delle mailbox (byte):"
 # | "default is 51200000.)"
 #. Type: string
 #. Description
-#: ../templates:23001
+#: ../templates:16001
+#, fuzzy
+#| msgid ""
+#| "Please specify the limit that Postfix should place on mailbox files to "
+#| "prevent runaway software errors. A value of zero (0) means no limit. The "
+#| "upstream default is 51200000."
 msgid ""
 "Please specify the limit that Postfix should place on mailbox files to "
-"prevent runaway software errors. A value of zero (0) means no limit. The "
-"upstream default is 51200000."
+"constrain file system usage by a single file (potentially due to abusive "
+"mail or software errors). A value of zero (0) means no limit. The upstream "
+"default is 51200000."
 msgstr ""
 "Specificare il limite che deve essere imposto da Postfix alla dimensione dei "
 "file delle mailbox per prevenire errori causati da processi incontrollabili. "
@@ -761,13 +635,15 @@ msgstr ""
 
 #. Type: string
 #. Description
-#: ../templates:24001
-msgid "Root and postmaster mail recipient:"
+#: ../templates:17001
+#, fuzzy
+#| msgid "Root and postmaster mail recipient:"
+msgid "Recipient for root and postmaster mail:"
 msgstr "Destinatario della posta diretta a root e postmaster:"
 
 #. Type: string
 #. Description
-#: ../templates:24001
+#: ../templates:17001
 msgid ""
 "Mail for the 'postmaster', 'root', and other system accounts needs to be "
 "redirected to the user account of the actual system administrator."
@@ -778,7 +654,7 @@ msgstr ""
 
 #. Type: string
 #. Description
-#: ../templates:24001
+#: ../templates:17001
 msgid ""
 "If this value is left empty, such mail will be saved in /var/mail/nobody, "
 "which is not recommended."
@@ -788,23 +664,144 @@ msgstr ""
 
 #. Type: string
 #. Description
-#: ../templates:24001
+#: ../templates:17001
 msgid "Mail is not delivered to external delivery agents as root."
 msgstr ""
 "La posta non viene consegnata ad agenti di consegna esterni come utente root."
 
 #. Type: string
 #. Description
-#: ../templates:24001
+#: ../templates:17001
+#, fuzzy
+#| msgid ""
+#| "If you already have a /etc/aliases file and it does not have an entry for "
+#| "root, then you should add this entry.  Leave this blank to not add one."
 msgid ""
 "If you already have a /etc/aliases file and it does not have an entry for "
-"root, then you should add this entry.  Leave this blank to not add one."
+"root, then you should add this entry. Leave this blank to not add one."
 msgstr ""
 "Se si ha già un file /etc/aliases che non contiene una voce per root, "
 "occorre aggiungerla. Lasciando in bianco non ne verrà aggiunta alcuna."
 
 #. Type: boolean
 #. Description
-#: ../templates:25001
+#: ../templates:18001
 msgid "Run newaliases command?"
 msgstr ""
+
+#~ msgid "Add a 'mydomain' entry in main.cf for upgrade?"
+#~ msgstr "Aggiungere una voce «mydomain» a main.cf per l'aggiornamento?"
+
+#~ msgid ""
+#~ "Postfix version 2.3.3-2 and later require changes in main.cf. "
+#~ "Specifically, mydomain must be specified, since hostname(1) is not a "
+#~ "fully qualified domain name (FQDN)."
+#~ msgstr ""
+#~ "Postfix a partire dalla versione 2.3.3-2 richiede delle modifiche in main."
+#~ "cf. In particolare, mydomain deve essere specificato, visto che "
+#~ "hostname(1) non è un nome di dominio pienamente qualificato (FQDN)."
+
+#~ msgid ""
+#~ "Failure to fix this will result in a broken mailer. Decline this option "
+#~ "to abort the upgrade, giving you the opportunity to add this "
+#~ "configuration yourself. Accept this option to automatically set mydomain "
+#~ "based on the FQDN of the machine."
+#~ msgstr ""
+#~ "Se non si corregge questa impostazione, il programma sarà inutilizzabile. "
+#~ "Rifiutando questa proposta, l'aggiornamento verrà annullato e si potrà "
+#~ "eseguire manualmente la modifica alla configurazione. Accettando la "
+#~ "proposta il valore di mydomain sarà impostato automaticamente al FQDN del "
+#~ "sistema."
+
+#~ msgid "Set smtpd_relay_restrictions in main.cf for upgrade?"
+#~ msgstr "Impostare smtpd_relay_restrictions nel main.cf per l'aggiornamento?"
+
+#~ msgid ""
+#~ "Postfix version 2.10 adds smtpd_relay_restrictions, to separate relaying "
+#~ "restrictions from recipient restrictions, and you have a non-default "
+#~ "value for smtpd_recipient_restrictions."
+#~ msgstr ""
+#~ "Postfix versione 2.10 aggiunge il parametro smtpd_relay_restrictions per "
+#~ "separare le restrizioni relative all'inoltro da quelle relative ai "
+#~ "destinatari, ed è impostato un valore non predefinito per "
+#~ "smtpd_recipient_restrictions."
+
+#~ msgid ""
+#~ "Failure to do this may result in deferred or bounced mail after the "
+#~ "upgrade.  Accept this option to set smtpd_relay_restrictions equal to "
+#~ "smtpd_recipient_restrictions."
+#~ msgstr ""
+#~ "Se questo non viene fatto, dopo l'aggiornamento si potrebbe avere posta "
+#~ "in ritardo o restituita. Accettare questa opzione per impostare il "
+#~ "parametro smtpd_recipient_restrictions uguale a smtpd_relay_restrictions."
+
+#~ msgid "Add 'sqlite' entry to dynamicmaps.cf?"
+#~ msgstr "Aggiungere la voce «sqlite» a dynamicmaps.cf?"
+
+#~ msgid ""
+#~ "Postfix version 2.9 adds sqlite support to maps, but your dynamicmaps.cf "
+#~ "does not reflect that.  Accept this option to add support for sqlite maps."
+#~ msgstr ""
+#~ "Postfix versione 2.9 aggiunge il supporto sqlite per le mappe, ma "
+#~ "dynamicmaps.cf in uso non supporta questa aggiunta. Accettare questa "
+#~ "opzione per abilitare il supporto alle mappe sqlite."
+
+#~ msgid "Install postfix despite an unsupported kernel?"
+#~ msgstr "Installare postfix anche se il kernel non è supportato?"
+
+#~ msgid ""
+#~ "Postfix uses features that are not found in kernels prior to 2.6. If you "
+#~ "proceed with the installation, Postfix will not run."
+#~ msgstr ""
+#~ "Postfix usa funzionalità che non sono disponibili nelle versioni del "
+#~ "kernel precedenti alla 2.6. Se si procede con l'installazione, Postfix "
+#~ "non verrà eseguito."
+
+#~ msgid "Correct retry entry in master.cf for upgrade?"
+#~ msgstr "Correggere la voce retry in master.cf per l'aggiornamento?"
+
+#~ msgid ""
+#~ "Postfix version 2.4 requires that the retry service be added to master.cf."
+#~ msgstr ""
+#~ "La versione 2.4 di postfix richiede di aggiungere il servizio retry a "
+#~ "master.cf."
+
+# | msgid ""
+# | "Failure to fix this will result in a broken mailer.  Decline this option "
+# | "to abort the upgrade, giving you the opportunity to add this "
+# | "configuration yourself.  Accept this option to automatically make master."
+# | "cf compatible with Postfix 2.2 in this respect."
+#~ msgid ""
+#~ "Failure to fix this will result in a broken mailer. Decline this option "
+#~ "to abort the upgrade, giving you the opportunity to add this "
+#~ "configuration yourself. Accept this option to automatically make master."
+#~ "cf compatible with Postfix 2.4 in this respect."
+#~ msgstr ""
+#~ "Se non si corregge questa impostazione, il programma sarà inutilizzabile. "
+#~ "Rifiutando questa proposta, l'aggiornamento verrà annullato e si avrà la "
+#~ "possibilità di modificare manualmente la configurazione. Accettando la "
+#~ "proposta si renderà master.cf compatibile con Postfix 2.4 in modo "
+#~ "automatico."
+
+#~ msgid "Correct tlsmgr entry in master.cf for upgrade?"
+#~ msgstr "Correggere la voce tlsmgr in master.cf per l'aggiornamento?"
+
+#~ msgid "Postfix version 2.2 has changed the invocation of tlsmgr."
+#~ msgstr "Nella versione 2.2 di postfix è cambiata l'invocazione di tlsmgr."
+
+# | msgid ""
+# | "Failure to fix this will result in a broken mailer.  Decline this option "
+# | "to abort the upgrade, giving you the opportunity to add this "
+# | "configuration yourself.  Accept this option to automatically make master."
+# | "cf compatible with Postfix 2.2 in this respect."
+#~ msgid ""
+#~ "Failure to fix this will result in a broken mailer. Decline this option "
+#~ "to abort the upgrade, giving you the opportunity to add this "
+#~ "configuration yourself. Accept this option to automatically make master."
+#~ "cf compatible with Postfix 2.2 in this respect."
+#~ msgstr ""
+#~ "Se non si corregge questa impostazione, il programma sarà inutilizzabile. "
+#~ "Rifiutando questa proposta, l'aggiornamento verrà annullato e si avrà la "
+#~ "possibilità di eseguire manualmente la configurazione. Accettando la "
+#~ "proposta si renderà master.cf compatibile con Postfix 2.2 in modo "
+#~ "automatico."

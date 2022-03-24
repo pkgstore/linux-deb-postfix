@@ -1,2 +1,0 @@
-postfix-pgsql: postinst-has-useless-call-to-ldconfig
-postfix-pgsql: postrm-has-useless-call-to-ldconfig

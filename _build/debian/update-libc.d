@@ -6,7 +6,7 @@
 
 QUEUEDIR="$(/usr/sbin/postconf -hx queue_directory 2>/dev/null || true)"
 if [ -n "$QUEUEDIR" ]; then
-    cp /etc/resolv.conf ${QUEUEDIR}/etc/resolv.conf
+    cp /etc/resolv.conf "${QUEUEDIR}/etc/resolv.conf"
     /usr/sbin/service postfix reload >/dev/null 2>&1 || exit 0
 fi
 

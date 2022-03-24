@@ -3,4 +3,8 @@ include:
   - https://salsa.debian.org/salsa-ci-team/pipeline/raw/master/recipes/debian.yml
 
 variables:
-  SALSA_CI_LINTIAN_FAIL_WARNING: 1
+  # LTO generates unreproducible .gnu_debuglink sections
+  # retest with GCC 12
+  SALSA_CI_DISABLE_REPROTEST: 1
+  # postfix defines LINUX2 or LINUX4 depending on the uname
+  #SALSA_CI_REPROTEST_ARGS: --vary=-kernel

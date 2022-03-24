@@ -15,16 +15,12 @@ set -e
 #          <conflicting-package> <version>
 # for details, see /usr/share/doc/packaging-manual/
 
-# Can't used postinst.functions until after stretch.
-HAVE_FUNC="n"
-if test -f /usr/share/postfix/postinst.functions; then
-    . /usr/share/postfix/postinst.functions
-    HAVE_FUNC=y
-fi
+# Common postfix functions
+. /usr/share/postfix/postinst.functions
 
 case "$1" in
     remove|purge|upgrade|deconfigure)
-	[ n = "$HAVE_FUNC" ] || delmap sqlite
+        delmap sqlite
         ;;
     failed-upgrade)
         ;;

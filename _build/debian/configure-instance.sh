@@ -8,12 +8,27 @@
 # was written by LaMont Jones <lamont@debian.org>, and based
 # off of the sendmail init script.
 
+chroot_extra_files=
+chroot_extra_CAdir=
+
 INSTANCE="$1"
 
 SYNC_CHROOT="y"
 
 if test -r /etc/default/postfix; then
 	. /etc/default/postfix
+fi
+
+# Sigh.  Because reasons, files is relative, CAdir not
+[ "$chroot_extra_CAdir" != '' ] && [ ! "${chroot_extra_CAdir%${chroot_extra_CAdir#?}}"x = '/x' ] && chroot_extra_CAdir=/$chroot_extra_CAdir
+if [ "$chroot_extra_files" != '' ]; then
+	files=''
+	for file in $chroot_extra_files
+	do
+		[ "${file%${file#?}}"x = '/x' ] && file=${file#?}
+		files="$files $file"
+	done
+	chroot_extra_files=$files
 fi
 
 if [ "X$INSTANCE" = X ] || [ "X$INSTANCE" = "X-" ]; then
@@ -36,9 +51,46 @@ fi
 
 config_dir=$($POSTCONF -hx config_directory)
 MAJOR_VER=$($POSTCONF -hx mail_version|cut -d. -f1)
-[ $MAJOR_VER -ge 3 ] && CHROOT_TEST="[yY]" || CHROOT_TEST="[-yY]"
+COMPAT=$($POSTCONF -xh compatibility_level|cut -d. -f1)
+[ $MAJOR_VER -ge 3 ] && [ $COMPAT -ge 1 ] && CHROOT_TEST="[yY]" || CHROOT_TEST="[-yY]"
 # see if anything is running chrooted.
 NEED_CHROOT=$(awk '/^[0-9a-z]/ && ($5 ~ "'"$CHROOT_TEST"'") { print "y"; exit}' ${config_dir}/master.cf)
+
+# Functions for chroot setup
+
+copyCAdir() {
+	# Copy/update CA directory in chroot
+	ca_path=$1
+	case "$ca_path" in
+	    '') :;; # no ca_path
+	    $queue_dir/*) :;;  # skip stuff already in chroot
+	    *)
+		if test -d "$ca_path"; then
+		    dest_dir="$queue_dir/${ca_path#/}"
+		    # strip any/all trailing /
+		    while [ "${dest_dir%/}" != "${dest_dir}" ]; do
+			dest_dir="${dest_dir%/}"
+		    done
+		    new=0
+		    if test -d "$dest_dir"; then
+			# write to a new directory ...
+			dest_dir="${dest_dir}.NEW"
+			new=1
+		    fi
+		    mkdir --parent ${dest_dir}
+		    # handle files in subdirectories
+		    (cd "$ca_path" && find . -name '*.pem' -not -xtype l -print0 | cpio -0pdL --quiet "$dest_dir") 2>/dev/null ||
+		        (echo failure copying certificates; exit 1)
+		    c_rehash "$dest_dir" >/dev/null 2>&1
+		    if [ "$new" = 1 ]; then
+			# and replace the old directory
+			rm -rf "${dest_dir%.NEW}"
+			mv "$dest_dir" "${dest_dir%.NEW}"
+		    fi
+		fi
+		;;
+	esac
+}
 
 if [ -n "$NEED_CHROOT" ] && [ -n "$SYNC_CHROOT" ]; then
 	# Make sure that the chroot environment is set up correctly.
@@ -46,69 +98,17 @@ if [ -n "$NEED_CHROOT" ] && [ -n "$SYNC_CHROOT" ]; then
 	queue_dir=$($POSTCONF -hx queue_directory)
 	cd "$queue_dir"
 
-	# copy the smtp CA path if specified
+	# Set the smtp CA path to be copied, if specified
 	sca_path=$($POSTCONF -hx smtp_tls_CApath)
-	case "$sca_path" in
-	    '') :;; # no sca_path
-	    $queue_dir/*) :;;  # skip stuff already in chroot
-	    *)
-		if test -d "$sca_path"; then
-		    dest_dir="$queue_dir/${sca_path#/}"
-		    # strip any/all trailing /
-		    while [ "${dest_dir%/}" != "${dest_dir}" ]; do
-			dest_dir="${dest_dir%/}"
-		    done
-		    new=0
-		    if test -d "$dest_dir"; then
-			# write to a new directory ...
-			dest_dir="${dest_dir}.NEW"
-			new=1
-		    fi
-		    mkdir --parent ${dest_dir}
-		    # handle files in subdirectories
-		    (cd "$sca_path" && find . -name '*.pem' -not -xtype l -print0 | cpio -0pdL --quiet "$dest_dir") 2>/dev/null ||
-		        (echo failure copying certificates; exit 1)
-		    c_rehash "$dest_dir" >/dev/null 2>&1
-		    if [ "$new" = 1 ]; then
-			# and replace the old directory
-			rm -rf "${dest_dir%.NEW}"
-			mv "$dest_dir" "${dest_dir%.NEW}"
-		    fi
-		fi
-		;;
-	esac
 
-	# copy the smtpd CA path if specified
+	# Set the smtpd CA path to be copied, if specified
 	dca_path=$($POSTCONF -hx smtpd_tls_CApath)
-	case "$dca_path" in
-	    '') :;; # no dca_path
-	    $queue_dir/*) :;;  # skip stuff already in chroot
-	    *)
-		if test -d "$dca_path"; then
-		    dest_dir="$queue_dir/${dca_path#/}"
-		    # strip any/all trailing /
-		    while [ "${dest_dir%/}" != "${dest_dir}" ]; do
-			dest_dir="${dest_dir%/}"
-		    done
-		    new=0
-		    if test -d "$dest_dir"; then
-			# write to a new directory ...
-			dest_dir="${dest_dir}.NEW"
-			new=1
-		    fi
-		    mkdir --parent ${dest_dir}
-		    # handle files in subdirectories
-		    (cd "$dca_path" && find . -name '*.pem' -not -xtype l -print0 | cpio -0pdL --quiet "$dest_dir") 2>/dev/null ||
-		        (echo failure copying certificates; exit 1)
-		    c_rehash "$dest_dir" >/dev/null 2>&1
-		    if [ "$new" = 1 ]; then
-			# and replace the old directory
-			rm -rf "${dest_dir%.NEW}"
-			mv "$dest_dir" "${dest_dir%.NEW}"
-		    fi
-		fi
-		;;
-	esac
+
+	# Copy or update each defined CA directory
+	for CA in $sca_path $dca_path $chroot_extra_CAdir
+		do
+			copyCAdir $CA
+		done
 
 	# if we're using unix:passwd.byname, then we need to add etc/passwd.
 	local_maps=$($POSTCONF -hx local_recipient_maps)
@@ -120,7 +120,8 @@ if [ -n "$NEED_CHROOT" ] && [ -n "$SYNC_CHROOT" ]; then
 	fi
 
 	FILES="etc/localtime etc/services etc/resolv.conf etc/hosts \
-	    etc/host.conf etc/nsswitch.conf etc/nss_mdns.config"
+	    etc/host.conf etc/nsswitch.conf etc/nss_mdns.config  \
+	    $chroot_extra_files"
 	for file in $FILES; do
 	    [ -d ${file%/*} ] || mkdir -p ${file%/*}
 	    if [ -f /${file} ]; then rm -f ${file} && cp /${file} ${file}; fi

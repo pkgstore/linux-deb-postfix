@@ -26,7 +26,6 @@ __version__ = "0.11: August 2, 2008"
 
 import sys
 import shutil
-import os
 import time
 
 def makeservice(name, port):
@@ -68,7 +67,7 @@ def makeservice(name, port):
      -o relay_recipient_maps=
 """ % (port))
     additions = header + smtp + smtpd
-    return (additions)
+    return additions
 
 
 USAGE = """To add a new filter service to your master.cf:
@@ -85,7 +84,6 @@ To output this usage message:
 
 
 if __name__ == '__main__':
-    import sys
     if len(sys.argv) < 3:
         print(USAGE + "\n")
     elif len(sys.argv) == 3:
@@ -93,9 +91,8 @@ if __name__ == '__main__':
         listenerport = sys.argv[2]
         # Read in master.cf and check to make sure specified names aren't
         # already used
-        masterfile = open('/etc/postfix/master.cf', mode='r')
-        master = masterfile.readlines()
-        masterfile.close()
+        with open('/etc/postfix/master.cf', mode='r') as masterfile:
+            master = masterfile.readlines()
         bailout = False
         for line in master:
             if servicename in line or listenerport in line:
@@ -115,12 +112,10 @@ if __name__ == '__main__':
             # Add stuff in
             stuff = makeservice(servicename, listenerport)
             # Append stuff to the working copy:
-            newmaster = open('/etc/postfix/master.cf.working', mode='a')
-            newmaster.writelines(stuff)
-            newmaster.close()
+            with open('/etc/postfix/master.cf.working', mode='a') as newmaster:
+                newmaster.writelines(stuff)
             # Put working copy in place.
             shutil.move('/etc/postfix/master.cf.working', \
                 '/etc/postfix/master.cf')
     else:
         print(USAGE + '\n')
-

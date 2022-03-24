@@ -49,7 +49,6 @@ running() {
 
 case "$1" in
     start)
-	log_daemon_msg "Starting Postfix Mail Transport Agent" postfix
 	RET=0
 	# for all instances that are not already running, handle chroot setup if needed, and start
 	for INSTANCE in $(enabled_instances); do
@@ -57,7 +56,7 @@ case "$1" in
 	    if [ "X$RUNNING" = X ]; then
 		/usr/lib/postfix/configure-instance.sh $INSTANCE
 		CMD="/usr/sbin/postmulti -- -i $INSTANCE -x ${DAEMON}"
-		if ! start-stop-daemon --start --exec $CMD quiet-quick-start; then
+		if ! start-stop-daemon --start --exec $CMD start; then
 		    RET=1
 		fi
 	    fi
@@ -66,14 +65,13 @@ case "$1" in
     ;;
 
     stop)
-	log_daemon_msg "Stopping Postfix Mail Transport Agent" postfix
 	RET=0
 	# for all instances that are not already running, handle chroot setup if needed, and start
 	for INSTANCE in $(enabled_instances); do
 	    RUNNING=$(running $INSTANCE)
 	    if [ "X$RUNNING" != X ]; then
 		CMD="/usr/sbin/postmulti -i $INSTANCE -x ${DAEMON}"
-		if ! ${CMD} quiet-stop; then
+		if ! ${CMD} stop; then
 		    RET=1
 		fi
 	    fi
@@ -87,12 +85,7 @@ case "$1" in
     ;;
 
     force-reload|reload)
-	log_action_begin_msg "Reloading Postfix configuration"
-	if ${DAEMON} quiet-reload; then
-	    log_action_end_msg 0
-	else
-	    log_action_end_msg 1
-	fi
+	${DAEMON} reload
     ;;
 
     status)

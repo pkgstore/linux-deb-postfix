@@ -38,6 +38,7 @@ fi
 # hanging around.  Yes, sendmail is a symlink...
 if [ -n "$RUNNING" ]; then
 	if [ -x /usr/sbin/sendmail ]; then
-		/usr/sbin/sendmail -q >/dev/null 2>&1
+		# Don't propagate the exit code on failure; cf. #959864
+		/usr/sbin/sendmail -q >/dev/null 2>&1 || true
 	fi
 fi

@@ -8,7 +8,6 @@ set -e
 
 case "$1" in
     remove)
-	ldconfig
 	dpkg-statoverride --remove /usr/sbin/postdrop >/dev/null 2>&1 || true
 	dpkg-statoverride --remove /var/spool/postfix/public >/dev/null 2>&1 || true
 	dpkg-statoverride --remove /usr/sbin/postqueue >/dev/null 2>&1 || true

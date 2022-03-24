@@ -2,7 +2,7 @@ Index: postfix/conf/main.cf
 ===================================================================
 --- postfix.orig/conf/main.cf
 +++ postfix/conf/main.cf
-@@ -47,7 +47,7 @@ compatibility_level = 2
+@@ -47,7 +47,7 @@ compatibility_level = 3.6
  # See the files in examples/chroot-setup for setting up Postfix chroot
  # environments on different UNIX systems.
  #
@@ -48,7 +48,7 @@ Index: postfix/makedefs
 ===================================================================
 --- postfix.orig/makedefs
 +++ postfix/makedefs
-@@ -509,11 +509,18 @@ case "$SYSTEM.$RELEASE" in
+@@ -507,11 +507,18 @@ case "$SYSTEM.$RELEASE" in
  			exit 1
  		    fi
  		    SYSLIBS="-ldb"
@@ -68,7 +68,7 @@ Index: postfix/makedefs
  		    do
  			test -e $lib/lib$name.a -o -e $lib/lib$name.so && {
  			    SYSLIBS="$SYSLIBS -l$name"
-@@ -588,11 +595,18 @@ EOF
+@@ -586,11 +593,18 @@ EOF
  			exit 1
  		    fi
  		    SYSLIBS="-ldb"
@@ -88,7 +88,7 @@ Index: postfix/makedefs
  		    do
  			test -e $lib/lib$name.a -o -e $lib/lib$name.so && {
  			    SYSLIBS="$SYSLIBS -l$name"
-@@ -626,11 +640,18 @@ EOF
+@@ -624,11 +638,18 @@ EOF
  			exit 1
  		    fi
  		    SYSLIBS="-ldb"

@@ -1,10 +1,197 @@
-postfix (3.6.2-100) unstable; urgency=medium
+postfix (3.6.5-100) unstable; urgency=medium
 
-  * COMMIT: 827bc9a4a5f2348c92aa7b82d5e4b8d623ff5d39.
-  * REQUESTS: +10 / +11 / +12.
-  * UPD: Move to DEB Store.
+  * COMMIT: 'cb8145ad4e3f98f000d1105bc05c9b58f882281a'.
+  * NEW: Postfix v3.6.5.
 
- -- Package Store <kitsune.solar@gmail.com>  Fri, 17 Sep 2021 07:05:32 +0000
+ -- Package Store <mail@z17.dev>  Fri, 25 Mar 2022 00:56:00 +0300
+
+postfix (3.6.4-1) unstable; urgency=medium
+
+  [Scott Kitterman]
+
+  * Ignore changes to html files in debian/source/options
+  * Delete d/p/postfix-dup-postconf.patch, included in upstream release
+  * Add lintian-override for insecure URI - releases are signed
+  * Make signing-key.asc minimal
+
+  [Wietse Venema]
+
+  * 3.6.4
+
+  [Christian Göttsche]
+
+  * Rework rules to use dh sequencer
+  * Call subcommand via shell
+  * Update cleaning to build package twice
+  * Bump to debhelper compat level 13
+  * Drop default include path and split CCARGS
+  * Use mkdir -Z instead of subsequent running restorecon
+  * Drop custom function pathfind in favor of command -v
+  * Quote path in update-libc.d
+  * Update postfix.config
+  * Quote directory path in postfix-instance-generator
+  * Drop check on postinst.functions in postfix-sqlite.prerm
+  * Update postfix-add-policy script
+  * Update postfix-add-filter script
+  * Drop versioned symlinks to plugin libraries
+  * Drop ldconfig calls in maintscripts
+  * Support parallel build, except do not build man pages parallel
+
+ -- Scott Kitterman <scott@kitterman.com>  Sat, 15 Jan 2022 18:41:26 -0500
+
+postfix (3.6.3-5) unstable; urgency=medium
+
+  [Wietse Venema]
+
+  * Fix duplicate bounce_notice_recipient entries in postconf output.
+    Closes: #999694
+
+  [Scott Kitterman]
+
+  * Remove left-over ca-certificates.crt file from postfix chroot.
+    Closes: #991609
+  * Align sysv init script start/stop/reload more to default init and drop
+    d/p/09_quiet_startup.diff, no longer needed.
+  * Add support for chroot_extra_files and chroot_extra_CAdir variables
+    sourced from /etc/default/postfix to enable users to specify additional
+    files needed in the chroot.  Closes: #948321
+  * Add information about keeping resolv.conf up to date in the chroot with
+    the resolvconf package.  Closes: #964762
+  * Add collate.pl script as postfix-collate.  Closes: #941457
+
+  [Christian Göttsche]
+
+  * Drop unreproducible build paths from makedefs.out.
+  * Enable Link Time Optimiation (LTO).
+
+  [Sergio Gelato]
+
+  * Correct if-up.d to not error out if postfix can't send mail yet.
+    Closes: #959864
+
+ -- Scott Kitterman <scott@kitterman.com>  Tue, 04 Jan 2022 15:20:02 -0500
+
+postfix (3.6.3-4) unstable; urgency=medium
+
+  [Scott Kitterman]
+
+  * Update d/p/70_postfix-check.diff to exclude makedefs.out from symlink
+    check.  Closes: #926331
+  * Test that nothing is reported by postfix check in autopkgtest
+  * Delete debian/patches/30_shared_libs.diff, no longer needed after linking
+    corrections in debian/rules
+  * Do not override user set default_transport in postinst.  Closes: #988538
+  * Add overrides for incorrect unused-debconf-template results
+  * Update debconf templates
+
+  [Christian Göttsche]
+
+  * Overhaul compiler flags
+  * Ignore blhc false positives on for loop
+  * Drop linking against local build libraries
+
+ -- Scott Kitterman <scott@kitterman.com>  Tue, 28 Dec 2021 17:00:40 -0500
+
+postfix (3.6.3-3) unstable; urgency=medium
+
+  [Scott Kitterman]
+
+  * Force rm of html/Makefile.in in install-indep to avoid potential FTBFS.
+    Closes: #1002497
+  * Make all debian/rules rm calls -f to support building when not root
+
+  [Christian Göttsche]
+
+  * Enable building with multiple jobs
+  * Drop unnecessary linking libraries
+
+ -- Scott Kitterman <scott@kitterman.com>  Sat, 25 Dec 2021 16:47:41 -0500
+
+postfix (3.6.3-2) unstable; urgency=medium
+
+  [Scott Kitterman]
+
+  * Add postfix-mta-sts-resolver to suggests.  Closes: #968516
+  * Include compatibility_level in addition to postifx version when
+    determining default value for chroot in master.cf.  Closes: #995129
+  * Fixup errors in postifx-add-* man pages.  Closes: #995031
+  * Set compatibility level to 3.6 for fresh installs
+  * Update main/master.cf.proto on upgrade if not modified.  Closes: #991513
+  * Decruft debconf template:
+    - Remove ancient (postfix 2.3) mydomain_warning
+    - Delete old (Postfix 2.10) relay_restrictions_warning
+    - Delete unused lmtp_retired_warning template
+    - Delete unused kernel_version_warning template
+    - Delete unused retry_upgrade_warning template
+    - Delete unused tlsmgr_upgrade_warning template
+  * Debconf template cleanup, thanks to Markus Hiereth for the suggestions.
+    Closes: #905653
+
+  [Miriam España Acebal]
+
+  * Removed LDFLAG -Bsymbolic-functions to fix issue where TLS is disabled
+    when private/tlmsgr socket is not found.  lp: #1885403
+
+  [Christian Göttsche]
+
+  * Update debian/patches/07_sasl_config.diff:
+    - Fix conversion warnings by adding explicit cast
+    - Drop unused function xsasl_getpath
+  * Fix lintian detected typos in Debian packaging.
+  * Do not require postfix to be build by root.
+  * Set -e shell option explicitly.
+  * Bump watch file standard to version 4.
+  * Add misc:Pre-Depends to postfix.
+  * Remove trailing spaces in changelog.
+  * Add Documentation key to postfix service.
+  * Drop alternative dependency on obsolete libmysqlclient-dev.
+  * Add standard salsa ci configuration.
+  * Drop unused debconf template sqlite_warning.
+
+  [Paride Legovini]
+
+  * d/postfix.postinst: tolerate search domain with a leading dot.
+    Closes: #991950
+
+  [Sergio Durigan Junior]
+
+  * Support networkd-dispatcher.  Closes: #999867  lp: #1718227
+
+ -- Scott Kitterman <scott@kitterman.com>  Thu, 23 Dec 2021 00:18:30 -0500
+
+postfix (3.6.3-1) unstable; urgency=medium
+
+  [Scott Kitterman]
+
+  * Add license information from TLS_LICENSE.  Closes: #991610
+  * Additional debian/copyright updates
+  * Refresh patches
+  * Add Pre-Depends on init-system-helpers (>= 1.54~) due to use of
+    --skip-systemd-native flag
+  * Update lintian overrides
+  * Bump standards-version to 4.6.0 without further change
+
+  [Wietse Venema]
+
+  * 3.6.3
+
+ -- Scott Kitterman <scott@kitterman.com>  Tue, 21 Dec 2021 00:13:25 -0500
+
+postfix (3.5.13-1) unstable; urgency=medium
+
+  [Wietse Venema]
+
+  * 3.5.13
+
+  [Aaron Thompson]
+
+  * Support non-default instance config directories.
+
+  [Scott Kitterman]
+
+  * Refresh patches
+
+ -- Scott Kitterman <scott@kitterman.com>  Sat, 13 Nov 2021 16:05:59 -0500
 
 postfix (3.5.6-1) unstable; urgency=medium
 
@@ -662,7 +849,7 @@ postfix (3.1.4-1) unstable; urgency=medium
 postfix (3.1.3-6) unstable; urgency=medium
 
   * Only delmap in postinst remove|purge in prerm for postfix-cdb, ldap,
-    lmdb, mysql, pcre, and pgsql to prevent postalias falure on package
+    lmdb, mysql, pcre, and pgsql to prevent postalias failure on package
     upgrade.  Add preinst for the same packages to restore the missing map due
     to the breakage in the previous uploads.  Closes: #847242
 
@@ -972,7 +1159,7 @@ postfix (3.0.3-2) unstable; urgency=medium
     Closes: #815047
   * convert intalled dynamicmaps.cf, deliver a correct one, move where daemons
     live.
-  * add needed refrence to -lpostfix-global in libpostfix-dns build.
+  * add needed reference to -lpostfix-global in libpostfix-dns build.
 
  -- LaMont Jones <lamont@debian.org>  Sat, 20 Feb 2016 11:36:50 -0700
 
@@ -1121,10 +1308,10 @@ postfix (2.10.1-1) unstable; urgency=low
   * l10n: Updated German debconf translations.  Closes: #703887 (Chris Leick)
   * l10n: Updated Polish debconf translations.  Closes: #703929 (Michał
     Kułach)
-  * l10n: updated Slovak debconf tranlations.  Closes: #709107 (Ivan Masár)
+  * l10n: updated Slovak debconf translations.  Closes: #709107 (Ivan Masár)
   * l10n: Updated Portuguese debconf translation.  Closes: #703776 (Miguel
     Figueiredo)
-  * l10n: Updated Danish debconf tranlations.  Closes: #704016 (Joe Hansen)
+  * l10n: Updated Danish debconf translations.  Closes: #704016 (Joe Hansen)
   * l10n: Updated Turkish debconf translations.  Closes: #703871 (Atila KOÇ)
   * l10n: Updated Italian debconf translations. (Cristian Rigamonti)
 
@@ -2059,7 +2246,7 @@ postfix (2.5.1~rc1-1) unstable; urgency=low
 
   [LaMont Jones]
 
-  * postconf.5: myhostname documenation unclear.  LP: #180551
+  * postconf.5: myhostname documentation unclear.  LP: #180551
   * postinst: also set relay_transport=error on Local Only systems
   * new template
 
@@ -2214,7 +2401,7 @@ postfix (2.4.6-4) unstable; urgency=low
 
   * control: drop deprecated Source-Version
   * lintian: eliminate warnings
-  * postfix-doc cannot use postconf without checking for existance.  LP: #173868
+  * postfix-doc cannot use postconf without checking for existence.  LP: #173868
 
   [Michel Grentzinger]
 
@@ -2561,7 +2748,7 @@ postfix (2.4-20070224-1) experimental; urgency=low
 
 postfix (2.3.7-4) unstable; urgency=low
 
-  * New russian, portugese, spanish, galician debconf templates.
+  * New russian, portuguese, spanish, galician debconf templates.
     Closes: #411941, #412205, #412413, #412494
 
  -- LaMont Jones <lamont@debian.org>  Mon, 26 Feb 2007 14:04:32 -0700
@@ -2791,7 +2978,7 @@ postfix (2.4-20061006-1) experimental; urgency=low
 postfix (2.3.3-3) unstable; urgency=low
 
   * Fix rfc1035_violation template entry.  Closes: #393087
-  * Add catalan transations. (debian/po/ca.po)  Closes: #393090
+  * Add catalan translations. (debian/po/ca.po)  Closes: #393090
   * Need to have libcdb1, not just tinycdb without the .so
   * Fix postfix-cdb so that it actually works.
 
@@ -2801,7 +2988,7 @@ postfix (2.3.3-2) unstable; urgency=low
 
   * Add postfix-cdb package, which supports tinycdb maps.
     Closes: #183163
-  * Detect and die nicely on emty myorigin file.  Closes: #322602
+  * Detect and die nicely on empty myorigin file.  Closes: #322602
   * Drop 10hostname.dpatch, which was only needed for installing
     postfix inside of debian-installer.  Closes: #333646
   * cleanup confusing debconf question.  Closes: #387646
@@ -2884,7 +3071,7 @@ postfix (2.2.10-2) unstable-UNRELEASED; urgency=low
 
   * Drop conffiles listed under /etc, since debhelper does that for us now.
     Closes: #356768
-  * Add portugese translations.  Close: #363134
+  * Add portuguese translations.  Close: #363134
 
  -- LaMont Jones <lamont@debian.org>  Wed, 19 Apr 2006 11:37:05 -0600
 
@@ -2990,7 +3177,7 @@ postfix (2.3-20060126-0) experimental; urgency=low
 
 postfix (2.2.8-8) unstable; urgency=low
 
-  * init.d stop needs to be more thurough in killing master.  Closes: #349950
+  * init.d stop needs to be more thorough in killing master.  Closes: #349950
   * ifup should be quiet when /usr is not mounted.  Closes launchpad.net/29788
 
  -- LaMont Jones <lamont@debian.org>  Fri, 27 Jan 2006 12:09:43 -0700
@@ -3353,7 +3540,7 @@ postfix (2.1.5-1) unstable; urgency=low
 postfix (2.1.4-5) unstable; urgency=low
 
   * Only listen on loopback for local-only client.
-  * updated Brazilian Portugese translations.  Closes: #263857
+  * updated Brazilian Portuguese translations.  Closes: #263857
   * ipv6 patch version of own_inet_addr behaved incorrectly.
   * Deal with null domain names better.
   * Properly cleanup on purge.  Closes: #166913, #251668
@@ -3687,7 +3874,7 @@ postfix (2.0.7-3) unstable; urgency=low
 
 postfix (2.0.7-2) unstable; urgency=low
 
-  * The "there is no 2.0.7 yet" relase.  Sigh.  This is 2.0.7-1 minus the
+  * The "there is no 2.0.7 yet" release.  Sigh.  This is 2.0.7-1 minus the
     upstream patch-that-isn't.  sigh.
 
  -- LaMont Jones <lamont@debian.org>  Mon, 17 Mar 2003 18:40:55 -0700
@@ -3821,7 +4008,7 @@ postfix (2.0.0.1-1) unstable; urgency=low
 
 postfix (1.1.12-1) unstable; urgency=low
 
-  * New upstream relase.
+  * New upstream release.
   * Fix postfix-tls description.  Closes: #160697
   * New upstream TLS (0.8.11a).
   * Fix wildcard transport initialization.  Closes: #167093
@@ -4070,7 +4257,7 @@ postfix (0.0.20011210.SNAPSHOT-1) unstable; urgency=high
     timeouts from LDAP server by reconnecting, instead of saying '451',
     other cleanup.)
   * Upstream version of ia64 alignment fix added.
-  * main.cf.dist is not gziped.  Closes: #122709.
+  * main.cf.dist is not gzipped.  Closes: #122709.
   * add diversion of smtpd package's smtpd.8 (to smtpd.real.8).
 
  -- LaMont Jones <lamont@debian.org>  Tue, 11 Dec 2001 09:18:57 -0700
@@ -4166,9 +4353,9 @@ postfix (0.0.20010502.SNAPSHOT-4) unstable; urgency=high
 postfix (0.0.20010502.SNAPSHOT-3) unstable; urgency=high
   * No-maps case wasn't handled well for upgrades.
     Closes: #98008, #97763, #98116.
-  * Make no-config case more prominant in selections, partially addresses
+  * Make no-config case more prominent in selections, partially addresses
     #97670.
-  * Correct sample-ldap.cf to correctly specify timeout parm.  Closes: #93978.
+  * Correct sample-ldap.cf to correctly specify timeout param.  Closes: #93978.
 
  -- LaMont Jones <lamont@debian.org>  Sun, 20 May 2001 08:17:33 -0600
 

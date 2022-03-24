@@ -2,7 +2,7 @@ Index: postfix/src/tls/tls_misc.c
 ===================================================================
 --- postfix.orig/src/tls/tls_misc.c
 +++ postfix/src/tls/tls_misc.c
-@@ -1257,26 +1257,7 @@ static void tls_version_split(unsigned l
+@@ -1255,26 +1255,7 @@ static void tls_version_split(unsigned l
  
  void    tls_check_version(void)
  {

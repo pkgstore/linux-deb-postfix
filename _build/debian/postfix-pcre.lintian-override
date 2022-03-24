@@ -1,2 +1,0 @@
-postfix-pcre: postinst-has-useless-call-to-ldconfig
-postfix-pcre: postrm-has-useless-call-to-ldconfig

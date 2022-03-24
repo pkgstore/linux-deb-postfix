@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: postfix\n"
 "Report-Msgid-Bugs-To: postfix@packages.debian.org\n"
-"POT-Creation-Date: 2018-12-10 02:32-0500\n"
+"POT-Creation-Date: 2021-12-28 14:12-0500\n"
 "PO-Revision-Date: 2017-01-22 12:37+0100\n"
 "Last-Translator: Miroslav Kure <kurem@debian.cz>\n"
 "Language-Team: Czech <debian-l10n-czech@lists.debian.org>\n"
@@ -27,81 +27,25 @@ msgstr ""
 #. Type: boolean
 #. Description
 #: ../templates:1001
-msgid "Add a 'mydomain' entry in main.cf for upgrade?"
-msgstr "Přidat při aktualizaci do souboru master.cf záznam „mydomain“?"
-
-#. Type: boolean
-#. Description
-#: ../templates:1001
-msgid ""
-"Postfix version 2.3.3-2 and later require changes in main.cf. Specifically, "
-"mydomain must be specified, since hostname(1) is not a fully qualified "
-"domain name (FQDN)."
-msgstr ""
-"Postfix verze 2.3.3-2 a novější vyžadují změnu v main.cf. Konkrétně musí být "
-"zadáno mydomain, protože hostname(2) není plně kvalifikované doménové jméno "
-"(FQDN)."
-
-#. Type: boolean
-#. Description
-#: ../templates:1001
-msgid ""
-"Failure to fix this will result in a broken mailer. Decline this option to "
-"abort the upgrade, giving you the opportunity to add this configuration "
-"yourself. Accept this option to automatically set mydomain based on the FQDN "
-"of the machine."
-msgstr ""
-"Opomenutí této opravy bude mít za následek nefunkční poštu. Pro přerušení "
-"aktualizace tuto volbu odmítněte, dostanete tak příležitost přidat toto "
-"nastavení sami. Chcete-li nastavit mydomain na plně kvalifikované doménové "
-"jméno tohoto počítače automaticky, volbu přijměte."
-
-#. Type: boolean
-#. Description
-#: ../templates:2001
-msgid "Set smtpd_relay_restrictions in main.cf for upgrade?"
-msgstr "Nastavit při aktualizaci smtpd_relay_restrictions v main.cf?"
-
-#. Type: boolean
-#. Description
-#: ../templates:2001
-msgid ""
-"Postfix version 2.10 adds smtpd_relay_restrictions, to separate relaying "
-"restrictions from recipient restrictions, and you have a non-default value "
-"for smtpd_recipient_restrictions."
-msgstr ""
-"Postfix verze 2.10 přidává proměnnou smtpd_relay_restrictions, aby se "
-"oddělila omezení pro relay od omezení pro příjemce. Proměnná "
-"smtpd_recipient_restrictions ve vašem konfiguračním souboru nemá výchozí "
-"hodnotu."
-
-#. Type: boolean
-#. Description
-#: ../templates:2001
-msgid ""
-"Failure to do this may result in deferred or bounced mail after the "
-"upgrade.  Accept this option to set smtpd_relay_restrictions equal to "
-"smtpd_recipient_restrictions."
-msgstr ""
-"Odpovíte-li kladně, nastaví se nová proměnná smtpd_relay_restrictions na "
-"stejnou hodnotu jako smtpd_recipient_restrictions. V opačném případě je "
-"možné, že se po aktualizaci bude pošta vracet nebo zpožďovat."
-
-#. Type: boolean
-#. Description
-#: ../templates:3001
 msgid "Update configuration to avoid compatibility warnings?"
 msgstr "Aktualizovat konfiguraci pro zamezení varování o kompatibilitě?"
 
 #. Type: boolean
 #. Description
-#: ../templates:3001
+#: ../templates:1001
+#, fuzzy
+#| msgid ""
+#| "This upgrade of postfix changes some default values in the configuration. "
+#| "As part of this upgrade, the following will be changed: (1) chrooted "
+#| "components will be changed from '-' to 'y' in master.cf, and (2) "
+#| "myhostname will be set to a fully-qualified domain name if it is not "
+#| "already such.  The install will be aborted if you do not allow the change."
 msgid ""
-"This upgrade of postfix changes some default values in the configuration. As "
+"This upgrade of Postfix changes some default values in the configuration. As "
 "part of this upgrade, the following will be changed: (1) chrooted components "
 "will be changed from '-' to 'y' in master.cf, and (2) myhostname will be set "
-"to a fully-qualified domain name if it is not already such.  The install "
-"will be aborted if you do not allow the change."
+"to a fully-qualified domain name if it is not already such. The install will "
+"be aborted if you do not allow the change."
 msgstr ""
 "Tato aktualizace postfixu mění některé výchozí konfigurační hodnoty: (1) v "
 "master.cf budou změněny komponenty používající chroot z „-“ na „y“ a (2) "
@@ -110,35 +54,21 @@ msgstr ""
 
 #. Type: boolean
 #. Description
-#: ../templates:4001
-msgid "Update master.cf for merged lmtp/smtp binary?"
-msgstr "Aktualizovat master.cf pro sloučenou binárku lmtp/smtp?"
-
-#. Type: boolean
-#. Description
-#: ../templates:4001
-msgid ""
-"This upgrade of postfix drops the \"lmtp\" symlink, and your configuration "
-"(master.cf) refers to it: lmtp was merged into smtp long ago.  The install "
-"will be aborted if you do not allow the change."
-msgstr ""
-"S touto aktualizací postfixu  bude smazán symbolický odkaz „lmtp“. "
-"Konfigurační soubor postfixu (master.cf) se na něj stále odkazuje, i když "
-"byl lmtp včleněn do smtp už před dávnou dobou. Pokud tuto změnu nepovolíte, "
-"bude instalace přerušena."
-
-#. Type: boolean
-#. Description
-#: ../templates:5001
+#: ../templates:2001
 msgid "Update main.cf for daemon_directory change?"
 msgstr "Aktualizovat daemon_directory v main.cf?"
 
 #. Type: boolean
 #. Description
-#: ../templates:5001
+#: ../templates:2001
+#, fuzzy
+#| msgid ""
+#| "This upgrade of postfix changes where daemons are located, and your "
+#| "postfix configuration explicitly specifies the old location.  The install "
+#| "will be aborted if you do not allow the change."
 msgid ""
-"This upgrade of postfix changes where daemons are located, and your postfix "
-"configuration explicitly specifies the old location.  The install will be "
+"This upgrade of Postfix changes where daemons are located, and your Postfix "
+"configuration explicitly specifies the old location. The install will be "
 "aborted if you do not allow the change."
 msgstr ""
 "S touto aktualizací postfixu se mění umístění daemonů. Konfigurační soubor "
@@ -147,16 +77,21 @@ msgstr ""
 
 #. Type: boolean
 #. Description
-#: ../templates:6001
+#: ../templates:3001
 msgid "Update dynamicmaps.cf for 3.0?"
 msgstr "Aktualizovat dynamicmaps.cf pro 3.0?"
 
 #. Type: boolean
 #. Description
-#: ../templates:6001
+#: ../templates:3001
+#, fuzzy
+#| msgid ""
+#| "Postfix version 3.0 changes how dynamic maps are delivered, and your "
+#| "dynamicmaps.cf does not reflect that.  Accept this option to convert "
+#| "dynamicmaps.cf to the version required for 3.0."
 msgid ""
 "Postfix version 3.0 changes how dynamic maps are delivered, and your "
-"dynamicmaps.cf does not reflect that.  Accept this option to convert "
+"dynamicmaps.cf does not reflect that. Accept this option to convert "
 "dynamicmaps.cf to the version required for 3.0."
 msgstr ""
 "Postfix verze 3.0 mění způsob doručování dynamických mapování, a soubor "
@@ -165,99 +100,13 @@ msgstr ""
 
 #. Type: boolean
 #. Description
-#: ../templates:7001
-msgid "Add 'sqlite' entry to dynamicmaps.cf?"
-msgstr "Přidat do dynamicmaps.cf položku „sqlite“?"
-
-#. Type: boolean
-#. Description
-#: ../templates:7001
-msgid ""
-"Postfix version 2.9 adds sqlite support to maps, but your dynamicmaps.cf "
-"does not reflect that.  Accept this option to add support for sqlite maps."
-msgstr ""
-"Postfix verze 2.9 přidává podporu pro sqlite, avšak soubor dynamicmaps.cf na "
-"tomto počítači to zatím nereflektuje. Odpovíte-li kladně, přidá se podpora "
-"pro sqlite automaticky."
-
-#. Type: boolean
-#. Description
-#: ../templates:8001
-msgid "Install postfix despite an unsupported kernel?"
-msgstr "Instalovat postfix navzdory nepodporovanému jádru?"
-
-#. Type: boolean
-#. Description
-#: ../templates:8001
-msgid ""
-"Postfix uses features that are not found in kernels prior to 2.6. If you "
-"proceed with the installation, Postfix will not run."
-msgstr ""
-"Postfix vyžaduje vlastnosti, které se nachází pouze v jádrech řady 2.6 a "
-"novějších. Budete-li pokračovat v instalaci, Postfix nebude fungovat."
-
-#. Type: boolean
-#. Description
-#: ../templates:9001
-msgid "Correct retry entry in master.cf for upgrade?"
-msgstr "Opravit záznam retry v souboru master.cf?"
-
-#. Type: boolean
-#. Description
-#: ../templates:9001
-msgid ""
-"Postfix version 2.4 requires that the retry service be added to master.cf."
-msgstr "Postfix verze 2.4 vyžaduje přidání služby retry do master.cf."
-
-#. Type: boolean
-#. Description
-#: ../templates:9001
-msgid ""
-"Failure to fix this will result in a broken mailer. Decline this option to "
-"abort the upgrade, giving you the opportunity to add this configuration "
-"yourself. Accept this option to automatically make master.cf compatible with "
-"Postfix 2.4 in this respect."
-msgstr ""
-"Opomenutí této opravy bude mít za následek nefunkční poštu. Pro přerušení "
-"aktualizace tuto volbu odmítněte, dostanete tak příležitost přidat toto "
-"nastavení sami. Chcete-li mít master.cf po této stránce automaticky "
-"kompatibilní s Postfixem 2.4, volbu přijměte."
-
-#. Type: boolean
-#. Description
-#: ../templates:10001
-msgid "Correct tlsmgr entry in master.cf for upgrade?"
-msgstr "Opravit záznam tlsmgr v souboru master.cf?"
-
-#. Type: boolean
-#. Description
-#: ../templates:10001
-msgid "Postfix version 2.2 has changed the invocation of tlsmgr."
-msgstr "Postfix verze 2.2 změnil způsob spouštění tlsmgr."
-
-#. Type: boolean
-#. Description
-#: ../templates:10001
-msgid ""
-"Failure to fix this will result in a broken mailer. Decline this option to "
-"abort the upgrade, giving you the opportunity to add this configuration "
-"yourself. Accept this option to automatically make master.cf compatible with "
-"Postfix 2.2 in this respect."
-msgstr ""
-"Opomenutí této opravy bude mít za následek nefunkční poštu. Pro přerušení "
-"aktualizace tuto volbu odmítněte, dostanete tak příležitost přidat toto "
-"nastavení sami. Chcete-li mít master.cf po této stránce automaticky "
-"kompatibilní s Postfixem 2.2, volbu přijměte."
-
-#. Type: boolean
-#. Description
-#: ../templates:11001
+#: ../templates:4001
 msgid "Ignore incorrect hostname entry?"
 msgstr "Ignorovat chybné jméno počítače?"
 
 #. Type: boolean
 #. Description
-#: ../templates:11001
+#: ../templates:4001
 msgid ""
 "The string '${enteredstring}' does not follow RFC 1035 and does not appear "
 "to be a valid IP address."
@@ -267,7 +116,7 @@ msgstr ""
 
 #. Type: boolean
 #. Description
-#: ../templates:11001
+#: ../templates:4001
 msgid ""
 "RFC 1035 states that 'each component must start with an alphanum, end with "
 "an alphanum and contain only alphanums and hyphens. Components must be "
@@ -279,8 +128,10 @@ msgstr ""
 
 #. Type: boolean
 #. Description
-#: ../templates:11001
-msgid "Please choose whether you want to keep that choice anyway."
+#: ../templates:4001
+#, fuzzy
+#| msgid "Please choose whether you want to keep that choice anyway."
+msgid "Please check and confirm if you want to keep your entry."
 msgstr "Rozhodněte se, zda přesto chcete ponechat zadanou možnost."
 
 #. Type: select
@@ -291,7 +142,7 @@ msgstr "Rozhodněte se, zda přesto chcete ponechat zadanou možnost."
 #. try to keep below ~71 characters.
 #. DO NOT USE commas (,) in Choices translations otherwise
 #. this will break the choices shown to users
-#: ../templates:12001
+#: ../templates:5001
 msgid "No configuration"
 msgstr "Žádné nastavení"
 
@@ -303,7 +154,7 @@ msgstr "Žádné nastavení"
 #. try to keep below ~71 characters.
 #. DO NOT USE commas (,) in Choices translations otherwise
 #. this will break the choices shown to users
-#: ../templates:12001
+#: ../templates:5001
 msgid "Internet Site"
 msgstr "Internetový počítač"
 
@@ -315,7 +166,7 @@ msgstr "Internetový počítač"
 #. try to keep below ~71 characters.
 #. DO NOT USE commas (,) in Choices translations otherwise
 #. this will break the choices shown to users
-#: ../templates:12001
+#: ../templates:5001
 msgid "Internet with smarthost"
 msgstr "Internet se smarthostem"
 
@@ -327,7 +178,7 @@ msgstr "Internet se smarthostem"
 #. try to keep below ~71 characters.
 #. DO NOT USE commas (,) in Choices translations otherwise
 #. this will break the choices shown to users
-#: ../templates:12001
+#: ../templates:5001
 msgid "Satellite system"
 msgstr "Satelitní systém"
 
@@ -339,19 +190,21 @@ msgstr "Satelitní systém"
 #. try to keep below ~71 characters.
 #. DO NOT USE commas (,) in Choices translations otherwise
 #. this will break the choices shown to users
-#: ../templates:12001
+#: ../templates:5001
 msgid "Local only"
 msgstr "Pouze tento počítač"
 
 #. Type: select
 #. Description
-#: ../templates:12002
-msgid "General type of mail configuration:"
+#: ../templates:5002
+#, fuzzy
+#| msgid "General type of mail configuration:"
+msgid "General mail configuration type:"
 msgstr "Základní model nastavení pošty:"
 
 #. Type: select
 #. Description
-#: ../templates:12002
+#: ../templates:5002
 msgid ""
 "Please select the mail server configuration type that best meets your needs."
 msgstr ""
@@ -360,7 +213,22 @@ msgstr ""
 
 #. Type: select
 #. Description
-#: ../templates:12002
+#: ../templates:5002
+#, fuzzy
+#| msgid ""
+#| " No configuration:\n"
+#| "  Should be chosen to leave the current configuration unchanged.\n"
+#| " Internet site:\n"
+#| "  Mail is sent and received directly using SMTP.\n"
+#| " Internet with smarthost:\n"
+#| "  Mail is received directly using SMTP or by running a utility such\n"
+#| "  as fetchmail. Outgoing mail is sent using a smarthost.\n"
+#| " Satellite system:\n"
+#| "  All mail is sent to another machine, called a 'smarthost', for "
+#| "delivery.\n"
+#| " Local only:\n"
+#| "  The only delivered mail is the mail for local users. There is no "
+#| "network."
 msgid ""
 " No configuration:\n"
 "  Should be chosen to leave the current configuration unchanged.\n"
@@ -370,9 +238,11 @@ msgid ""
 "  Mail is received directly using SMTP or by running a utility such\n"
 "  as fetchmail. Outgoing mail is sent using a smarthost.\n"
 " Satellite system:\n"
-"  All mail is sent to another machine, called a 'smarthost', for delivery.\n"
+"  All mail is sent to another machine, called a 'smarthost', for\n"
+"  delivery.\n"
 " Local only:\n"
-"  The only delivered mail is the mail for local users. There is no network."
+"  The only delivered mail is the mail for local users. There is no\n"
+"  network."
 msgstr ""
 " Žádné nastavení:\n"
 "  Vyberte, pokud chcete zachovat stávající nastavení nezměněné.\n"
@@ -389,13 +259,13 @@ msgstr ""
 
 #. Type: error
 #. Description
-#: ../templates:13001
+#: ../templates:6001
 msgid "Postfix not configured"
 msgstr "Postfix nebyl nastaven"
 
 #. Type: error
 #. Description
-#: ../templates:13001
+#: ../templates:6001
 msgid ""
 "You have chosen 'No Configuration'. Postfix will not be configured and will "
 "not be started by default. Please run 'dpkg-reconfigure postfix' at a later "
@@ -411,18 +281,24 @@ msgstr ""
 
 #. Type: string
 #. Description
-#: ../templates:14001
+#: ../templates:7001
 msgid "System mail name:"
 msgstr "Poštovní jméno systému:"
 
 #. Type: string
 #. Description
-#: ../templates:14001
+#: ../templates:7001
+#, fuzzy
+#| msgid ""
+#| "The \"mail name\" is the domain name used to \"qualify\" _ALL_ mail "
+#| "addresses without a domain name. This includes mail to and from <root>: "
+#| "please do not make your machine send out mail from root@example.org "
+#| "unless root@example.org has told you to."
 msgid ""
-"The \"mail name\" is the domain name used to \"qualify\" _ALL_ mail "
-"addresses without a domain name. This includes mail to and from <root>: "
-"please do not make your machine send out mail from root@example.org unless "
-"root@example.org has told you to."
+"The 'mail name' is the domain name used to 'qualify' _ALL_ mail addresses "
+"without a domain name. This includes mail to and from <root>: please do not "
+"make your machine send out mail from root@example.org unless root@example."
+"org has told you to."
 msgstr ""
 "„Poštovní jméno“ je doménové jméno používané pro „kvalifikování“ poštovních "
 "adres bez doménového jména. Sem patří pošta od a pro adresu <root>: ujistěte "
@@ -431,7 +307,7 @@ msgstr ""
 
 #. Type: string
 #. Description
-#: ../templates:14001
+#: ../templates:7001
 msgid ""
 "This name will also be used by other programs. It should be the single, "
 "fully qualified domain name (FQDN)."
@@ -441,9 +317,9 @@ msgstr ""
 
 #. Type: string
 #. Description
-#. Translators, please do NOT translate 'example.org' whch is registered
+#. Translators, please do NOT translate 'example.org' which is registered
 #. as a domain name reserved for documentation as per RFC 2606
-#: ../templates:14001
+#: ../templates:7001
 msgid ""
 "Thus, if a mail address on the local host is foo@example.org, the correct "
 "value for this option would be example.org."
@@ -453,13 +329,13 @@ msgstr ""
 
 #. Type: string
 #. Description
-#: ../templates:15001
+#: ../templates:8001
 msgid "Other destinations to accept mail for (blank for none):"
 msgstr "Další místa, pro která přijímat poštu (nebo ponechte prázdné):"
 
 #. Type: string
 #. Description
-#: ../templates:15001
+#: ../templates:8001
 msgid ""
 "Please give a comma-separated list of domains for which this machine should "
 "consider itself the final destination. If this is a mail domain gateway, you "
@@ -471,13 +347,13 @@ msgstr ""
 
 #. Type: string
 #. Description
-#: ../templates:16001
+#: ../templates:9001
 msgid "SMTP relay host (blank for none):"
 msgstr "Počítač pro SMTP relay (nebo prázdné):"
 
 #. Type: string
 #. Description
-#: ../templates:16001
+#: ../templates:9001
 msgid ""
 "Please specify a domain, host, host:port, [address] or [address]:port. Use "
 "the form [destination] to turn off MX lookups. Leave this blank for no relay "
@@ -489,17 +365,22 @@ msgstr ""
 
 #. Type: string
 #. Description
-#: ../templates:16001
+#: ../templates:9001
 msgid "Do not specify more than one host."
 msgstr "Nezadávejte více než jeden počítač."
 
 #. Type: string
 #. Description
-#: ../templates:16001
+#: ../templates:9001
+#, fuzzy
+#| msgid ""
+#| "The relayhost parameter specifies the default host to send mail to when "
+#| "no entry is matched in the optional transport(5) table. When no relay "
+#| "host is given, mail is routed directly to the destination."
 msgid ""
-"The relayhost parameter specifies the default host to send mail to when no "
-"entry is matched in the optional transport(5) table. When no relay host is "
-"given, mail is routed directly to the destination."
+"The relayhost parameter specifies the default external host to send mail to "
+"when no entry is matched in the optional transport(5) table. When no relay "
+"host is given, mail is routed directly to the destination."
 msgstr ""
 "Parametr relayhost zadává výchozí počítač, přes který se zasílá pošta, která "
 "nevyhoví žádnému pravidlu ve volitelné tabulce transport(5). Pokud je "
@@ -507,19 +388,19 @@ msgstr ""
 
 #. Type: boolean
 #. Description
-#: ../templates:17001
+#: ../templates:10001
 msgid "Use procmail for local delivery?"
 msgstr "Použít pro lokální doručování procmail?"
 
 #. Type: boolean
 #. Description
-#: ../templates:17001
+#: ../templates:10001
 msgid "Please choose whether you want to use procmail to deliver local mail."
 msgstr "Vyberte, zda chcete pro doručování lokální pošty použít procmail."
 
 #. Type: boolean
 #. Description
-#: ../templates:17001
+#: ../templates:10001
 msgid ""
 "Note that if you use procmail to deliver mail system-wide, you should set up "
 "an alias that forwards mail for root to a real user."
@@ -529,31 +410,31 @@ msgstr ""
 
 #. Type: select
 #. Choices
-#: ../templates:18001
+#: ../templates:11001
 msgid "all"
 msgstr "všechny"
 
 #. Type: select
 #. Choices
-#: ../templates:18001
+#: ../templates:11001
 msgid "ipv6"
 msgstr "ipv6"
 
 #. Type: select
 #. Choices
-#: ../templates:18001
+#: ../templates:11001
 msgid "ipv4"
 msgstr "ipv4"
 
 #. Type: select
 #. Description
-#: ../templates:18002
+#: ../templates:11002
 msgid "Internet protocols to use:"
 msgstr "Internetové protokoly, které se mají použít:"
 
 #. Type: select
 #. Description
-#: ../templates:18002
+#: ../templates:11002
 msgid ""
 "By default, whichever Internet protocols are enabled on the system at "
 "installation time will be used. You may override this default with any of "
@@ -565,7 +446,7 @@ msgstr ""
 
 #. Type: select
 #. Description
-#: ../templates:18002
+#: ../templates:11002
 msgid ""
 " all : use both IPv4 and IPv6 addresses;\n"
 " ipv6: listen only on IPv6 addresses;\n"
@@ -577,33 +458,37 @@ msgstr ""
 
 #. Type: string
 #. Description
-#: ../templates:19001
+#: ../templates:12001
 msgid "Local address extension character:"
 msgstr "Znak pro příponu lokální adresy:"
 
 #. Type: string
 #. Description
-#: ../templates:19001
+#: ../templates:12001
+#, fuzzy
+#| msgid ""
+#| "Please choose the character that will be used to define a local address "
+#| "extension."
 msgid ""
-"Please choose the character that will be used to define a local address "
-"extension."
+"Please choose a character used as recipient delimiter that will indicate a "
+"local address extension."
 msgstr "Vyberte prosím znak, kterým se definuje přípona lokální adresy."
 
 #. Type: string
 #. Description
-#: ../templates:19001
+#: ../templates:12001
 msgid "To not use address extensions, leave the string blank."
 msgstr "Pokud nechcete používat přípony adres, ponechte prázdné."
 
 #. Type: error
 #. Description
-#: ../templates:20001
+#: ../templates:13001
 msgid "Bad recipient delimiter"
 msgstr "Chybný oddělovač příjemců"
 
 #. Type: error
 #. Description
-#: ../templates:20001
+#: ../templates:13001
 msgid ""
 "The recipient delimiter must be a single character. '${enteredstring}' is "
 "what you entered."
@@ -613,13 +498,13 @@ msgstr ""
 
 #. Type: boolean
 #. Description
-#: ../templates:21001
+#: ../templates:14001
 msgid "Force synchronous updates on mail queue?"
 msgstr "Vynutit synchronní aktualizaci poštovní fronty?"
 
 #. Type: boolean
 #. Description
-#: ../templates:21001
+#: ../templates:14001
 msgid ""
 "If synchronous updates are forced, then mail is processed more slowly. If "
 "not forced, then there is a remote chance of losing some mail if the system "
@@ -633,13 +518,13 @@ msgstr ""
 
 #. Type: string
 #. Description
-#: ../templates:22001
+#: ../templates:15001
 msgid "Local networks:"
 msgstr "Lokální sítě:"
 
 #. Type: string
 #. Description
-#: ../templates:22001
+#: ../templates:15001
 msgid ""
 "Please specify the network blocks for which this host should relay mail. The "
 "default is just the local host, which is needed by some mail user agents. "
@@ -654,7 +539,7 @@ msgstr ""
 
 #. Type: string
 #. Description
-#: ../templates:22001
+#: ../templates:15001
 msgid ""
 "If this host is a smarthost for a block of machines, you need to specify the "
 "netblocks here, or mail will be rejected rather than relayed."
@@ -664,9 +549,13 @@ msgstr ""
 
 #. Type: string
 #. Description
-#: ../templates:22001
+#: ../templates:15001
+#, fuzzy
+#| msgid ""
+#| "To use the postfix default (which is based on the connected subnets), "
+#| "leave this blank."
 msgid ""
-"To use the postfix default (which is based on the connected subnets), leave "
+"To use the Postfix default (which is based on the connected subnets), leave "
 "this blank."
 msgstr ""
 "Chcete-li použít výchozí nastavení (které je založeno na připojených "
@@ -674,17 +563,23 @@ msgstr ""
 
 #. Type: string
 #. Description
-#: ../templates:23001
+#: ../templates:16001
 msgid "Mailbox size limit (bytes):"
 msgstr "Limit poštovní schránky (bajty):"
 
 #. Type: string
 #. Description
-#: ../templates:23001
+#: ../templates:16001
+#, fuzzy
+#| msgid ""
+#| "Please specify the limit that Postfix should place on mailbox files to "
+#| "prevent runaway software errors. A value of zero (0) means no limit. The "
+#| "upstream default is 51200000."
 msgid ""
 "Please specify the limit that Postfix should place on mailbox files to "
-"prevent runaway software errors. A value of zero (0) means no limit. The "
-"upstream default is 51200000."
+"constrain file system usage by a single file (potentially due to abusive "
+"mail or software errors). A value of zero (0) means no limit. The upstream "
+"default is 51200000."
 msgstr ""
 "Zadejte prosím limit, který má Postfix uplatňovat na velikost poštovních "
 "schránek. Hodnota nula (0) znamená bez omezení. Autor programu nastavuje "
@@ -692,13 +587,15 @@ msgstr ""
 
 #. Type: string
 #. Description
-#: ../templates:24001
-msgid "Root and postmaster mail recipient:"
+#: ../templates:17001
+#, fuzzy
+#| msgid "Root and postmaster mail recipient:"
+msgid "Recipient for root and postmaster mail:"
 msgstr "Příjemce pošty pro uživatele root a postmaster:"
 
 #. Type: string
 #. Description
-#: ../templates:24001
+#: ../templates:17001
 msgid ""
 "Mail for the 'postmaster', 'root', and other system accounts needs to be "
 "redirected to the user account of the actual system administrator."
@@ -708,7 +605,7 @@ msgstr ""
 
 #. Type: string
 #. Description
-#: ../templates:24001
+#: ../templates:17001
 msgid ""
 "If this value is left empty, such mail will be saved in /var/mail/nobody, "
 "which is not recommended."
@@ -718,26 +615,144 @@ msgstr ""
 
 #. Type: string
 #. Description
-#: ../templates:24001
+#: ../templates:17001
 msgid "Mail is not delivered to external delivery agents as root."
 msgstr ""
 "Pošta není předávána externím doručovacím programům pod uživatelem root."
 
 #. Type: string
 #. Description
-#: ../templates:24001
+#: ../templates:17001
+#, fuzzy
+#| msgid ""
+#| "If you already have a /etc/aliases file and it does not have an entry for "
+#| "root, then you should add this entry.  Leave this blank to not add one."
 msgid ""
 "If you already have a /etc/aliases file and it does not have an entry for "
-"root, then you should add this entry.  Leave this blank to not add one."
+"root, then you should add this entry. Leave this blank to not add one."
 msgstr ""
 "Pokud již soubor /etc/aliases máte a chybí v něm záznam pro uživatele root, "
 "měli byste ho přidat. Ponecháte-li prázdné, záznam se nepřidá."
 
 #. Type: boolean
 #. Description
-#: ../templates:25001
+#: ../templates:18001
 msgid "Run newaliases command?"
 msgstr ""
+
+#~ msgid "Add a 'mydomain' entry in main.cf for upgrade?"
+#~ msgstr "Přidat při aktualizaci do souboru master.cf záznam „mydomain“?"
+
+#~ msgid ""
+#~ "Postfix version 2.3.3-2 and later require changes in main.cf. "
+#~ "Specifically, mydomain must be specified, since hostname(1) is not a "
+#~ "fully qualified domain name (FQDN)."
+#~ msgstr ""
+#~ "Postfix verze 2.3.3-2 a novější vyžadují změnu v main.cf. Konkrétně musí "
+#~ "být zadáno mydomain, protože hostname(2) není plně kvalifikované doménové "
+#~ "jméno (FQDN)."
+
+#~ msgid ""
+#~ "Failure to fix this will result in a broken mailer. Decline this option "
+#~ "to abort the upgrade, giving you the opportunity to add this "
+#~ "configuration yourself. Accept this option to automatically set mydomain "
+#~ "based on the FQDN of the machine."
+#~ msgstr ""
+#~ "Opomenutí této opravy bude mít za následek nefunkční poštu. Pro přerušení "
+#~ "aktualizace tuto volbu odmítněte, dostanete tak příležitost přidat toto "
+#~ "nastavení sami. Chcete-li nastavit mydomain na plně kvalifikované "
+#~ "doménové jméno tohoto počítače automaticky, volbu přijměte."
+
+#~ msgid "Set smtpd_relay_restrictions in main.cf for upgrade?"
+#~ msgstr "Nastavit při aktualizaci smtpd_relay_restrictions v main.cf?"
+
+#~ msgid ""
+#~ "Postfix version 2.10 adds smtpd_relay_restrictions, to separate relaying "
+#~ "restrictions from recipient restrictions, and you have a non-default "
+#~ "value for smtpd_recipient_restrictions."
+#~ msgstr ""
+#~ "Postfix verze 2.10 přidává proměnnou smtpd_relay_restrictions, aby se "
+#~ "oddělila omezení pro relay od omezení pro příjemce. Proměnná "
+#~ "smtpd_recipient_restrictions ve vašem konfiguračním souboru nemá výchozí "
+#~ "hodnotu."
+
+#~ msgid ""
+#~ "Failure to do this may result in deferred or bounced mail after the "
+#~ "upgrade.  Accept this option to set smtpd_relay_restrictions equal to "
+#~ "smtpd_recipient_restrictions."
+#~ msgstr ""
+#~ "Odpovíte-li kladně, nastaví se nová proměnná smtpd_relay_restrictions na "
+#~ "stejnou hodnotu jako smtpd_recipient_restrictions. V opačném případě je "
+#~ "možné, že se po aktualizaci bude pošta vracet nebo zpožďovat."
+
+#~ msgid "Update master.cf for merged lmtp/smtp binary?"
+#~ msgstr "Aktualizovat master.cf pro sloučenou binárku lmtp/smtp?"
+
+#~ msgid ""
+#~ "This upgrade of postfix drops the \"lmtp\" symlink, and your "
+#~ "configuration (master.cf) refers to it: lmtp was merged into smtp long "
+#~ "ago.  The install will be aborted if you do not allow the change."
+#~ msgstr ""
+#~ "S touto aktualizací postfixu  bude smazán symbolický odkaz „lmtp“. "
+#~ "Konfigurační soubor postfixu (master.cf) se na něj stále odkazuje, i když "
+#~ "byl lmtp včleněn do smtp už před dávnou dobou. Pokud tuto změnu "
+#~ "nepovolíte, bude instalace přerušena."
+
+#~ msgid "Add 'sqlite' entry to dynamicmaps.cf?"
+#~ msgstr "Přidat do dynamicmaps.cf položku „sqlite“?"
+
+#~ msgid ""
+#~ "Postfix version 2.9 adds sqlite support to maps, but your dynamicmaps.cf "
+#~ "does not reflect that.  Accept this option to add support for sqlite maps."
+#~ msgstr ""
+#~ "Postfix verze 2.9 přidává podporu pro sqlite, avšak soubor dynamicmaps.cf "
+#~ "na tomto počítači to zatím nereflektuje. Odpovíte-li kladně, přidá se "
+#~ "podpora pro sqlite automaticky."
+
+#~ msgid "Install postfix despite an unsupported kernel?"
+#~ msgstr "Instalovat postfix navzdory nepodporovanému jádru?"
+
+#~ msgid ""
+#~ "Postfix uses features that are not found in kernels prior to 2.6. If you "
+#~ "proceed with the installation, Postfix will not run."
+#~ msgstr ""
+#~ "Postfix vyžaduje vlastnosti, které se nachází pouze v jádrech řady 2.6 a "
+#~ "novějších. Budete-li pokračovat v instalaci, Postfix nebude fungovat."
+
+#~ msgid "Correct retry entry in master.cf for upgrade?"
+#~ msgstr "Opravit záznam retry v souboru master.cf?"
+
+#~ msgid ""
+#~ "Postfix version 2.4 requires that the retry service be added to master.cf."
+#~ msgstr "Postfix verze 2.4 vyžaduje přidání služby retry do master.cf."
+
+#~ msgid ""
+#~ "Failure to fix this will result in a broken mailer. Decline this option "
+#~ "to abort the upgrade, giving you the opportunity to add this "
+#~ "configuration yourself. Accept this option to automatically make master."
+#~ "cf compatible with Postfix 2.4 in this respect."
+#~ msgstr ""
+#~ "Opomenutí této opravy bude mít za následek nefunkční poštu. Pro přerušení "
+#~ "aktualizace tuto volbu odmítněte, dostanete tak příležitost přidat toto "
+#~ "nastavení sami. Chcete-li mít master.cf po této stránce automaticky "
+#~ "kompatibilní s Postfixem 2.4, volbu přijměte."
+
+#~ msgid "Correct tlsmgr entry in master.cf for upgrade?"
+#~ msgstr "Opravit záznam tlsmgr v souboru master.cf?"
+
+#~ msgid "Postfix version 2.2 has changed the invocation of tlsmgr."
+#~ msgstr "Postfix verze 2.2 změnil způsob spouštění tlsmgr."
+
+#~ msgid ""
+#~ "Failure to fix this will result in a broken mailer. Decline this option "
+#~ "to abort the upgrade, giving you the opportunity to add this "
+#~ "configuration yourself. Accept this option to automatically make master."
+#~ "cf compatible with Postfix 2.2 in this respect."
+#~ msgstr ""
+#~ "Opomenutí této opravy bude mít za následek nefunkční poštu. Pro přerušení "
+#~ "aktualizace tuto volbu odmítněte, dostanete tak příležitost přidat toto "
+#~ "nastavení sami. Chcete-li mít master.cf po této stránce automaticky "
+#~ "kompatibilní s Postfixem 2.2, volbu přijměte."
 
 #~ msgid ""
 #~ "Postfix version 2.0.2 and later require changes in dynamicmaps.cf. "

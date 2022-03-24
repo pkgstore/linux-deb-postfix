@@ -41,6 +41,19 @@
 import unittest, subprocess, re, pexpect, smtplib, socket, os, time, tempfile
 import testlib
 
+import sys
+''' Test for postfix check output'''
+result = subprocess.run(['postconf', 'maillog_file = /dev/stdout'], capture_output=True, text=True)
+result = subprocess.run(['postfix', 'check'], capture_output=True, text=True)
+if result.returncode != 0:
+    print('postfix check failed with error code: {0}.'.format(result.returncode))
+    sys.exit(1)
+if result.stdout:
+    print('postfix check warning/error: {0}'.format(result.stdout[26:]))
+    subprocess.run(['postconf', 'maillog_file ='], capture_output=True, text=True)
+    sys.exit(1)
+subprocess.run(['postconf', 'maillog_file ='], capture_output=True, text=True)
+
 class PostfixTest(testlib.TestlibCase):
     '''Test Postfix MTA.'''
 
@@ -96,6 +109,7 @@ class PostfixTest(testlib.TestlibCase):
         subprocess.call(['mkdir','-p','/var/run/saslauthd'])
         subprocess.call(['/usr/sbin/service', 'saslauthd', 'stop'], stdout=subprocess.PIPE)
         subprocess.call(['/usr/sbin/service', 'saslauthd', 'start'], stdout=subprocess.PIPE)
+        subprocess.call(['cp', '/etc/sasldb2', '/var/spool/postfix/etc/sasldb2'])
 
     def tearDown(self):
         '''Clean up after each test_* function'''

@@ -14,7 +14,7 @@ Index: postfix/conf/master.cf
 ===================================================================
 --- postfix.orig/conf/master.cf
 +++ postfix/conf/master.cf
-@@ -110,10 +110,8 @@ maildrop  unix  -       n       n
+@@ -114,10 +114,8 @@ maildrop  unix  -       n       n
  #
  # See the Postfix UUCP_README file for configuration details.
  #
