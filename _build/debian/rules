@@ -224,7 +224,7 @@ execute_before_dh_gencontrol:
 
 
 override_dh_auto_clean:
-#	${MAKE} tidy
+	${MAKE} tidy
 
 
 # Below here is fairly generic really
